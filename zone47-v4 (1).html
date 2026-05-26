@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZONE 47</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono:wght@400&family=Oswald:wght@700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;font-family:'Share Tech Mono',monospace;}
+
+#stage{position:relative;width:700px;height:420px;max-width:100vw;overflow:hidden;background:#000;border:1px solid #111;}
+
+/* ── SCENE BASE ── */
+.scene{position:absolute;inset:0;opacity:0;transition:opacity .05s;pointer-events:none;}
+.scene.active{opacity:1;pointer-events:auto;}
+
+/* ══════════════════════
+   SCENE 0 — TITLE
+══════════════════════ */
+#s0{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.title-bg-city{position:absolute;bottom:0;left:0;right:0;height:160px;}
+.title-main{font-family:'Bebas Neue',sans-serif;font-size:110px;letter-spacing:12px;color:#ffe033;
+  text-shadow:0 0 60px #ffe03388,0 0 120px #ffe03344;
+  animation:titlePulse 3s ease-in-out infinite;position:relative;z-index:2;line-height:1;}
+@keyframes titlePulse{0%,100%{text-shadow:0 0 60px #ffe03388,0 0 120px #ffe03344;}50%{text-shadow:0 0 80px #ffe033cc,0 0 160px #ffe03366;}}
+.title-sub{font-size:11px;letter-spacing:6px;color:#444;margin-top:6px;position:relative;z-index:2;}
+.title-loop{font-size:10px;letter-spacing:4px;color:#ff3333;margin-top:18px;position:relative;z-index:2;
+  animation:blink 1.4s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.noise-overlay{position:absolute;inset:0;pointer-events:none;z-index:10;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;}
+
+/* ══════════════════════
+   SCENE 1 — BEDROOM
+══════════════════════ */
+#s1{background:linear-gradient(180deg,#06060f 0%,#0a0a18 100%);}
+.bedroom-wall{position:absolute;inset:0;background:linear-gradient(180deg,#0a0814 0%,#0d0c1a 60%,#12101e 100%);}
+.bedroom-floor{position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(180deg,#0e0c18 0%,#09080f 100%);border-top:2px solid #1a1830;}
+.window-frame{position:absolute;top:30px;right:60px;width:140px;height:110px;border:6px solid #1a1828;background:#050810;box-shadow:inset 0 0 30px #000,0 0 20px #00000088;}
+.window-cross{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:4px;background:#1a1828;}
+.window-cross::after{content:'';position:absolute;left:50%;top:-28px;width:4px;height:60px;background:#1a1828;}
+.window-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(255,200,80,.07) 0%,transparent 70%);}
+.city-through-window{position:absolute;bottom:0;left:0;right:0;height:70px;}
+/* bed */
+.bed-frame{position:absolute;bottom:88px;left:40px;width:240px;height:70px;background:#1a1428;border:2px solid #2a2040;border-radius:4px;}
+.bed-pillow{position:absolute;bottom:148px;left:48px;width:90px;height:28px;background:#201c30;border:1px solid #2a2545;border-radius:8px;}
+.bed-blanket{position:absolute;bottom:88px;left:40px;width:240px;height:45px;background:linear-gradient(180deg,#1e1840 0%,#14102e 100%);border-radius:4px 4px 0 0;}
+/* desk */
+.desk{position:absolute;bottom:88px;right:40px;width:150px;height:8px;background:#1a1020;border-top:2px solid #2a1835;}
+.desk-leg{position:absolute;bottom:88px;right:60px;width:6px;height:60px;background:#1a1020;}
+.alarm-clock{position:absolute;bottom:96px;right:80px;width:30px;height:26px;background:#0a0a14;border:2px solid #ff4400;border-radius:4px;
+  box-shadow:0 0 12px #ff440088;}
+.alarm-clock::after{content:'6:50';font-family:'Share Tech Mono';font-size:7px;color:#ff4400;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;}
+/* chris in bed */
+.chris-bed{position:absolute;bottom:130px;left:80px;width:140px;height:50px;}
+/* alarm pulse ring */
+.alarm-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:2px solid #ff4400;
+  animation:ringOut 1s ease-out infinite;opacity:0;transform:translate(-50%,-50%);}
+@keyframes ringOut{0%{width:20px;height:20px;opacity:.8;}100%{width:80px;height:80px;opacity:0;}}
+
+/* ══════════════════════
+   SCENE 2 — STREET/SKATE
+══════════════════════ */
+#s2{background:linear-gradient(180deg,#020208 0%,#05050e 55%,#080814 100%);}
+.street-sky{position:absolute;inset:0;}
+.moon{position:absolute;top:35px;right:120px;width:50px;height:50px;border-radius:50%;
+  background:radial-gradient(circle at 38% 42%,#d8d0a0 0%,#c0b880 50%,#a09860 100%);
+  box-shadow:0 0 40px rgba(220,210,140,.35),0 0 80px rgba(220,210,140,.1);}
+.moon-crater{position:absolute;border-radius:50%;background:rgba(0,0,0,.15);}
+.street-ground{position:absolute;bottom:0;left:0;right:0;height:120px;
+  background:linear-gradient(180deg,#0c0c18 0%,#080810 100%);}
+.street-line{position:absolute;bottom:60px;left:0;right:0;height:2px;background:#1a1a28;}
+.road-dash{position:absolute;bottom:45px;height:3px;background:rgba(255,220,50,.12);border-radius:2px;
+  animation:roadScroll 2s linear infinite;}
+@keyframes roadScroll{from{left:0;}to{left:-80px;}}
+.sidewalk{position:absolute;bottom:60px;left:0;right:0;height:20px;background:#0e0e1c;}
+/* buildings silhouette */
+.bldg-sil{position:absolute;bottom:80px;}
+/* street lamp */
+.lamp-post{position:absolute;bottom:60px;width:6px;background:#0e0e18;border-radius:3px;}
+.lamp-head{position:absolute;top:0;right:-18px;width:24px;height:8px;background:#14141f;border-radius:3px 3px 0 0;}
+.lamp-glow{position:absolute;border-radius:50%;pointer-events:none;}
+
+/* Chris skater character */
+.skater-wrap{position:absolute;bottom:78px;transition:left .016s linear;}
+.skater-body{position:relative;width:48px;height:88px;}
+
+/* ══════════════════════
+   SCENE 3 — FOREST
+══════════════════════ */
+#s3{background:linear-gradient(180deg,#010503 0%,#020a04 50%,#030d05 100%);}
+.forest-ground{position:absolute;bottom:0;left:0;right:0;height:110px;
+  background:linear-gradient(180deg,#050e06 0%,#030a04 100%);}
+.ground-line{position:absolute;bottom:110px;left:0;right:0;height:2px;background:#0a1a0a;}
+.fog-layer{position:absolute;bottom:90px;left:0;right:0;height:60px;pointer-events:none;}
+/* fallen log */
+.fallen-log{position:absolute;border-radius:8px;background:linear-gradient(180deg,#1e0e04 0%,#140a02 100%);border-top:2px solid #2a1a06;}
+.log-root{position:absolute;background:#140a02;}
+
+/* ══════════════════════
+   SCENE 4 — LAB
+══════════════════════ */
+#s4{background:#0d0d0d;}
+.lab-ceiling{position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(180deg,#111 0%,#0e0e0e 100%);}
+.lab-floor{position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(180deg,#0a0a0a 0%,#080808 100%);}
+.lab-floor-line{position:absolute;bottom:100px;left:0;right:0;height:1px;background:#1a1a1a;}
+.lab-wall-panel{position:absolute;background:#111;border:1px solid #1a1a1a;}
+.lab-pipe{position:absolute;background:#181818;border-top:1px solid #202020;border-bottom:1px solid #141414;}
+/* fluorescent light */
+.fluoro{position:absolute;top:55px;height:5px;border-radius:3px;
+  background:rgba(180,220,190,.08);
+  box-shadow:0 0 20px rgba(180,220,190,.12),0 0 40px rgba(180,220,190,.06);}
+/* containment tube */
+.tube-outer{position:absolute;border:3px solid #1a2a1a;border-radius:8px;background:rgba(0,0,0,.6);overflow:hidden;}
+.tube-fluid{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(0,255,100,.08) 40%,rgba(0,255,100,.15) 100%);}
+.tube-glow{position:absolute;inset:-10px;border-radius:12px;pointer-events:none;}
+.tube-label{position:absolute;font-size:8px;letter-spacing:3px;color:rgba(0,255,100,.6);text-align:center;}
+/* mirror scene */
+.mirror-frame{position:absolute;border-radius:6px;background:#080808;border:6px solid #1a1a1a;overflow:hidden;
+  box-shadow:0 0 0 2px #222,0 0 40px rgba(0,0,0,.8);}
+.mirror-reflection{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,transparent 50%,rgba(255,255,255,.01) 100%);}
+.mirror-light{position:absolute;inset:0;}
+
+/* ══════════════════════
+   SHARED UI ELEMENTS
+══════════════════════ */
+/* Caption boxes */
+.cap{position:absolute;background:rgba(0,0,0,.88);border-radius:3px;padding:8px 12px;
+  max-width:440px;font-size:11px;line-height:1.5;pointer-events:none;}
+.cap-speaker{font-size:7.5px;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;opacity:.8;}
+.cap-text{color:#ccc;}
+
+/* Loop counter */
+.loop-hud{position:absolute;top:12px;right:14px;font-family:'Bebas Neue';font-size:22px;
+  letter-spacing:4px;text-shadow:0 0 12px currentColor;}
+
+/* Scene # label */
+.scene-tag{position:absolute;top:10px;left:12px;font-size:7px;letter-spacing:4px;color:#333;text-transform:uppercase;}
+
+/* ZAP overlay */
+#zap-overlay{position:absolute;inset:0;pointer-events:none;z-index:50;opacity:0;}
+#zap-bolt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+
+/* Glitch overlay */
+#glitch-overlay{position:absolute;inset:0;pointer-events:none;z-index:48;opacity:0;mix-blend-mode:screen;}
+
+/* Scanlines */
+#scanlines{position:absolute;inset:0;pointer-events:none;z-index:60;opacity:.18;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.55) 0px,rgba(0,0,0,.55) 1px,transparent 1px,transparent 3px);}
+
+/* Controls */
+#controls{display:flex;align-items:center;gap:10px;padding:8px 8px 6px;background:#050505;border-top:1px solid #111;width:700px;max-width:100vw;}
+#playBtn{background:none;border:1px solid #222;color:#666;padding:5px 18px;font-family:'Share Tech Mono';font-size:11px;cursor:pointer;letter-spacing:.15em;transition:all .2s;}
+#playBtn:hover{border-color:#ffe033;color:#ffe033;}
+#progressBar{flex:1;height:2px;background:#111;cursor:pointer;}
+#progressFill{height:100%;background:#ffe033;width:0%;pointer-events:none;transition:width .1s linear;}
+#timeLabel{font-size:10px;color:#333;min-width:72px;text-align:right;letter-spacing:.1em;}
+#sceneLabel{font-size:8px;color:#2a2a2a;letter-spacing:.3em;text-transform:uppercase;padding:2px 8px 5px;background:#050505;width:700px;max-width:100vw;}
+
+/* SVG character animations */
+@keyframes walkLegs{0%,100%{d:path("M22,60 L16,88 L18,88 L24,68 L30,88 L32,88 L26,60Z")}50%{d:path("M22,60 L12,82 L14,82 L22,64 L30,82 L32,82 L26,60Z")}}
+@keyframes armSwing{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(20deg)}}
+@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes creatureGlitch{0%,90%,100%{transform:translateX(0)}91%{transform:translateX(-6px)}93%{transform:translateX(8px)}95%{transform:translateX(-4px)}97%{transform:translateX(5px)}}
+@keyframes eyeGlow{0%,100%{filter:drop-shadow(0 0 4px #ff2244)}50%{filter:drop-shadow(0 0 10px #ff2244) drop-shadow(0 0 20px #ff0000)}}
+@keyframes tubeRise{from{transform:translateY(100%)}to{transform:translateY(-100%)}}
+@keyframes panelPulse{0%,100%{filter:drop-shadow(0 0 6px #ff2244)}50%{filter:drop-shadow(0 0 14px #ff2244) drop-shadow(0 0 28px #ff000044)}}
+@keyframes panelGreen{0%,100%{filter:drop-shadow(0 0 6px #00ff77)}50%{filter:drop-shadow(0 0 14px #00ff77) drop-shadow(0 0 28px #00ff7744)}}
+@keyframes fogDrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes starTwinkle{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes alarmFlash{0%,100%{opacity:0}50%{opacity:.25}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeInCap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes skateboard{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes runBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes stitchPulse{0%,100%{opacity:.6}50%{opacity:1;filter:drop-shadow(0 0 4px #ff2244)}}
+@keyframes mirrorShimmer{0%,100%{opacity:.03}50%{opacity:.07}}
+@keyframes labFlicker{0%,95%,100%{opacity:1}96%,98%{opacity:.4}}
+@keyframes bloodDrip{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- ══ SCANLINES ══ -->
+  <div id="scanlines"></div>
+
+  <!-- ══ ZAP OVERLAY ══ -->
+  <div id="zap-overlay">
+    <svg id="zap-bolt" width="60" height="140" viewBox="0 0 60 140">
+      <polygon points="35,0 15,65 30,65 10,140 50,55 33,55 55,0" fill="#ffe033" opacity=".9"/>
+      <polygon points="35,0 15,65 30,65 10,140 50,55 33,55 55,0" fill="#fff" opacity=".4" transform="translate(-3,-2)"/>
+    </svg>
+  </div>
+
+  <!-- ══ GLITCH OVERLAY ══ -->
+  <div id="glitch-overlay">
+    <svg width="700" height="420" style="position:absolute;inset:0;">
+      <filter id="glitchFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9 0.1" numOctaves="1" seed="2" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+      </filter>
+      <rect width="700" height="420" fill="rgba(255,0,60,0.3)" filter="url(#glitchFilter)"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 0 — TITLE
+  ══════════════════════════════ -->
+  <div id="s0" class="scene active">
+    <!-- City silhouette -->
+    <svg class="title-bg-city" viewBox="0 0 700 160" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="cityGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#080814"/>
+          <stop offset="100%" stop-color="#0a0a1e"/>
+        </linearGradient>
+      </defs>
+      <!-- buildings -->
+      <rect x="0" y="40" width="55" height="120" fill="#0a0a18"/>
+      <rect x="58" y="10" width="70" height="150" fill="#080818"/>
+      <rect x="132" y="55" width="42" height="105" fill="#0a0a18"/>
+      <rect x="177" y="0" width="80" height="160" fill="#06061a"/>
+      <rect x="261" y="30" width="58" height="130" fill="#080816"/>
+      <rect x="323" y="15" width="90" height="145" fill="#07071a"/>
+      <rect x="417" y="45" width="52" height="115" fill="#090916"/>
+      <rect x="472" y="8" width="82" height="152" fill="#06061a"/>
+      <rect x="558" y="38" width="60" height="122" fill="#0a0a18"/>
+      <rect x="622" y="0" width="78" height="160" fill="#080818"/>
+      <!-- windows glow -->
+      <rect x="20" y="55" width="8" height="6" fill="rgba(255,200,80,.15)"/>
+      <rect x="35" y="55" width="8" height="6" fill="rgba(255,200,80,.08)"/>
+      <rect x="70" y="22" width="8" height="6" fill="rgba(255,200,80,.15)"/>
+      <rect x="85" y="22" width="8" height="6" fill="rgba(255,200,80,.1)"/>
+      <rect x="100" y="40" width="8" height="6" fill="rgba(255,200,80,.12)"/>
+      <rect x="190" y="12" width="8" height="6" fill="rgba(255,200,80,.2)"/>
+      <rect x="205" y="12" width="8" height="6" fill="rgba(255,200,80,.08)"/>
+      <rect x="220" y="30" width="8" height="6" fill="rgba(255,200,80,.15)"/>
+      <rect x="335" y="28" width="8" height="6" fill="rgba(255,200,80,.18)"/>
+      <rect x="355" y="28" width="8" height="6" fill="rgba(255,200,80,.1)"/>
+      <rect x="485" y="20" width="8" height="6" fill="rgba(255,200,80,.15)"/>
+      <rect x="505" y="20" width="8" height="6" fill="rgba(255,200,80,.08)"/>
+    </svg>
+    <div class="noise-overlay"></div>
+    <div style="position:relative;z-index:2;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:5px;color:#333;margin-bottom:6px;animation:slideUp .8s ease-out both;">E H A N &nbsp; T A L H A &nbsp; &amp; &nbsp; T A H M I D &nbsp; P R E S E N T</div>
+    <div class="title-main">ZONE 47</div>
+    <div class="title-sub">A &nbsp; C H R I S &nbsp; S A N C H E Z &nbsp; S T O R Y</div>
+    <div class="title-loop">I T ' S &nbsp; A &nbsp; L O O P .</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 1 — BEDROOM / MORNING
+  ══════════════════════════════ -->
+  <div id="s1" class="scene">
+    <div class="noise-overlay"></div>
+
+    <!-- Room -->
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="roomWall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0a0814"/>
+          <stop offset="100%" stop-color="#0e0c1c"/>
+        </linearGradient>
+        <linearGradient id="roomFloor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0d0b1a"/>
+          <stop offset="100%" stop-color="#090810"/>
+        </linearGradient>
+        <radialGradient id="windowGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,200,80,.12)"/>
+          <stop offset="100%" stop-color="rgba(255,200,80,0)"/>
+        </radialGradient>
+        <linearGradient id="alarmGlow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ff4400"/>
+          <stop offset="100%" stop-color="#cc2200"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Wall -->
+      <rect width="700" height="420" fill="url(#roomWall)"/>
+      <!-- Baseboard -->
+      <rect x="0" y="320" width="700" height="100" fill="url(#roomFloor)"/>
+      <line x1="0" y1="320" x2="700" y2="320" stroke="#1c1830" stroke-width="2"/>
+
+      <!-- Window -->
+      <rect x="460" y="28" width="150" height="115" fill="#030609" rx="2"/>
+      <rect x="460" y="28" width="150" height="115" fill="none" stroke="#1a1828" stroke-width="7" rx="2"/>
+      <!-- window cross bars -->
+      <line x1="535" y1="28" x2="535" y2="143" stroke="#1a1828" stroke-width="5"/>
+      <line x1="460" y1="85" x2="610" y2="85" stroke="#1a1828" stroke-width="5"/>
+      <!-- city lights through window -->
+      <rect x="462" y="100" width="14" height="10" fill="rgba(255,190,60,.12)"/>
+      <rect x="482" y="95" width="14" height="15" fill="rgba(255,190,60,.08)"/>
+      <rect x="502" y="105" width="10" height="8" fill="rgba(255,190,60,.1)"/>
+      <rect x="520" y="90" width="14" height="18" fill="rgba(255,190,60,.06)"/>
+      <rect x="540" y="100" width="10" height="10" fill="rgba(255,190,60,.08)"/>
+      <rect x="555" y="95" width="12" height="14" fill="rgba(255,190,60,.05)"/>
+      <rect x="575" y="100" width="14" height="10" fill="rgba(255,190,60,.07)"/>
+      <rect x="592" y="88" width="14" height="20" fill="rgba(255,190,60,.06)"/>
+      <!-- moon glow through window -->
+      <ellipse cx="535" cy="55" rx="30" ry="28" fill="url(#windowGlow)"/>
+      <!-- window glow on wall -->
+      <ellipse cx="535" cy="86" rx="80" ry="60" fill="rgba(255,190,60,.04)"/>
+
+      <!-- Desk -->
+      <rect x="430" y="300" width="200" height="12" fill="#18122a" rx="2"/>
+      <rect x="450" y="312" width="8" height="80" fill="#140e22"/>
+      <rect x="610" y="312" width="8" height="80" fill="#140e22"/>
+      <!-- alarm clock on desk -->
+      <rect x="490" y="272" width="36" height="28" fill="#0a0a16" rx="4"/>
+      <rect x="490" y="272" width="36" height="28" fill="none" stroke="#ff4400" stroke-width="1.5" rx="4"/>
+      <rect x="493" y="275" width="30" height="14" fill="#050510" rx="2"/>
+      <text x="508" y="285" font-family="Share Tech Mono" font-size="7" fill="#ff4400" text-anchor="middle">6:50</text>
+      <!-- alarm bells -->
+      <circle cx="492" cy="270" r="4" fill="#0a0a16" stroke="#ff4400" stroke-width="1.5"/>
+      <circle cx="524" cy="270" r="4" fill="#0a0a16" stroke="#ff4400" stroke-width="1.5"/>
+      <!-- alarm glow -->
+      <ellipse cx="508" cy="280" rx="28" ry="22" fill="rgba(255,68,0,.08)" style="animation:alarmFlash 0.8s ease-in-out infinite"/>
+
+      <!-- Bed frame -->
+      <rect x="40" y="260" width="260" height="80" fill="#1a1428" rx="4"/>
+      <rect x="40" y="255" width="260" height="15" fill="#201c38" rx="3"/><!-- headboard -->
+      <rect x="40" y="260" width="260" height="50" fill="#1c1840" rx="4"/><!-- blanket -->
+      <!-- blanket folds -->
+      <path d="M60,285 Q120,278 180,285 Q240,292 300,285" stroke="#221e48" stroke-width="2" fill="none"/>
+      <!-- pillow -->
+      <rect x="55" y="258" width="100" height="30" fill="#221e3a" rx="8"/>
+
+      <!-- Chris sleeping (lump under blanket) -->
+      <ellipse cx="200" cy="270" rx="55" ry="18" fill="#1e1a3c"/>
+      <!-- head on pillow -->
+      <circle cx="100" cy="261" r="16" fill="#c8906a"/>
+      <!-- hair -->
+      <ellipse cx="100" cy="250" rx="17" ry="10" fill="#1a1008"/>
+      <!-- ZZZ -->
+      <text x="130" y="248" font-family="Share Tech Mono" font-size="10" fill="rgba(150,150,200,.4)" id="zzz1">z</text>
+      <text x="143" y="238" font-family="Share Tech Mono" font-size="13" fill="rgba(150,150,200,.3)" id="zzz2">z</text>
+      <text x="158" y="225" font-family="Share Tech Mono" font-size="16" fill="rgba(150,150,200,.2)" id="zzz3">Z</text>
+
+      <!-- Skateboard leaning on wall -->
+      <rect x="20" y="260" width="12" height="50" fill="#5a2a08" rx="3" transform="rotate(-8,26,285)"/>
+      <ellipse cx="20" cy="272" rx="5" ry="5" fill="#222" transform="rotate(-8,26,285)"/>
+      <ellipse cx="20" cy="300" rx="5" ry="5" fill="#222" transform="rotate(-8,26,285)"/>
+
+      <!-- Poster on wall -->
+      <rect x="330" y="60" width="80" height="110" fill="#0c0c18" stroke="#181826" stroke-width="2"/>
+      <text x="370" y="100" font-family="Bebas Neue" font-size="14" fill="#222" text-anchor="middle">THRASHER</text>
+      <!-- dirty socks on floor -->
+      <ellipse cx="370" cy="330" rx="20" ry="8" fill="#0e0c18" transform="rotate(-15,370,330)"/>
+      <ellipse cx="400" cy="340" rx="18" ry="7" fill="#0d0c18" transform="rotate(10,400,340)"/>
+
+      <!-- Half eaten waffle -->
+      <rect x="490" y="315" width="24" height="22" fill="#c8901a" rx="3"/>
+      <line x1="498" y1="315" x2="498" y2="337" stroke="#a87010" stroke-width="1.5"/>
+      <line x1="506" y1="315" x2="506" y2="337" stroke="#a87010" stroke-width="1.5"/>
+      <line x1="490" y1="323" x2="514" y2="323" stroke="#a87010" stroke-width="1.5"/>
+      <line x1="490" y1="329" x2="514" y2="329" stroke="#a87010" stroke-width="1.5"/>
+    </svg>
+
+    <!-- Alarm flash overlay -->
+    <div style="position:absolute;inset:0;background:rgba(255,68,0,.12);pointer-events:none;animation:alarmFlash 0.7s step-end infinite;"></div>
+
+    <!-- ALARM text -->
+    <div id="s1-alarm" style="position:absolute;top:28%;left:50%;transform:translateX(-50%);font-family:'Bebas Neue';font-size:52px;color:#ff4400;letter-spacing:8px;text-shadow:0 0 30px #ff440099;opacity:0;transition:opacity .3s;white-space:nowrap;">ALARM BLARING</div>
+
+    <!-- Caption -->
+    <div id="s1-cap" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ffe033;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ffe033;">Chris</div>
+      <div class="cap-text">"8:30?! I MISSED THE BUS TO CAMP!"</div>
+    </div>
+
+    <div class="scene-tag">01 / THE MORNING LOOP</div>
+    <div id="s1-loop" class="loop-hud" style="color:#ff4444;opacity:0;transition:opacity .4s;">LOOP 1</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 2 — STREET / SKATE
+  ══════════════════════════════ -->
+  <div id="s2" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="nightSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#020208"/>
+          <stop offset="60%" stop-color="#04040e"/>
+          <stop offset="100%" stop-color="#060610"/>
+        </linearGradient>
+        <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(220,210,140,.3)"/>
+          <stop offset="60%" stop-color="rgba(220,210,140,.08)"/>
+          <stop offset="100%" stop-color="rgba(220,210,140,0)"/>
+        </radialGradient>
+        <radialGradient id="lampHalo" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,220,100,.5)"/>
+          <stop offset="100%" stop-color="rgba(255,220,100,0)"/>
+        </radialGradient>
+        <radialGradient id="lampHalo2" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,220,100,.5)"/>
+          <stop offset="100%" stop-color="rgba(255,220,100,0)"/>
+        </radialGradient>
+        <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0c0c1a"/>
+          <stop offset="100%" stop-color="#07070e"/>
+        </linearGradient>
+        <linearGradient id="sidewalkGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0e0e1c"/>
+          <stop offset="100%" stop-color="#0a0a16"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="700" height="420" fill="url(#nightSky)"/>
+
+      <!-- Stars -->
+      <circle cx="50" cy="30" r="1" fill="white" opacity=".5" style="animation:starTwinkle 2.1s ease-in-out infinite"/>
+      <circle cx="120" cy="15" r="1.2" fill="white" opacity=".4" style="animation:starTwinkle 3.2s ease-in-out infinite .5s"/>
+      <circle cx="200" cy="40" r=".8" fill="white" opacity=".6" style="animation:starTwinkle 1.8s ease-in-out infinite 1s"/>
+      <circle cx="280" cy="20" r="1" fill="white" opacity=".3" style="animation:starTwinkle 2.8s ease-in-out infinite .3s"/>
+      <circle cx="350" cy="10" r="1.2" fill="white" opacity=".5" style="animation:starTwinkle 2.2s ease-in-out infinite .8s"/>
+      <circle cx="420" cy="35" r=".8" fill="white" opacity=".4" style="animation:starTwinkle 3s ease-in-out infinite .2s"/>
+      <circle cx="500" cy="18" r="1" fill="white" opacity=".5" style="animation:starTwinkle 1.9s ease-in-out infinite 1.2s"/>
+      <circle cx="580" cy="28" r="1.2" fill="white" opacity=".3" style="animation:starTwinkle 2.6s ease-in-out infinite .7s"/>
+      <circle cx="650" cy="12" r=".8" fill="white" opacity=".6" style="animation:starTwinkle 2s ease-in-out infinite .4s"/>
+      <circle cx="90" cy="55" r=".7" fill="white" opacity=".3" style="animation:starTwinkle 3.4s ease-in-out infinite 1.5s"/>
+      <circle cx="160" cy="48" r="1" fill="white" opacity=".4" style="animation:starTwinkle 2.3s ease-in-out infinite .9s"/>
+      <circle cx="450" cy="50" r=".8" fill="white" opacity=".4" style="animation:starTwinkle 2.7s ease-in-out infinite .6s"/>
+      <circle cx="620" cy="42" r="1" fill="white" opacity=".3" style="animation:starTwinkle 3.1s ease-in-out infinite 1.1s"/>
+
+      <!-- Moon -->
+      <ellipse cx="600" cy="60" rx="55" ry="55" fill="url(#moonHalo)"/>
+      <circle cx="600" cy="60" r="28" fill="#d4cc98"/>
+      <!-- moon craters -->
+      <circle cx="592" cy="54" r="5" fill="rgba(0,0,0,.12)"/>
+      <circle cx="610" cy="67" r="3.5" fill="rgba(0,0,0,.1)"/>
+      <circle cx="598" cy="70" r="2" fill="rgba(0,0,0,.08)"/>
+      <circle cx="585" cy="65" r="3" fill="rgba(0,0,0,.09)"/>
+      <!-- moon shadow -->
+      <circle cx="608" cy="56" r="24" fill="#a09870" opacity=".4"/>
+
+      <!-- City background buildings -->
+      <rect x="0" y="150" width="50" height="170" fill="#070712"/>
+      <rect x="52" y="120" width="70" height="200" fill="#060610"/>
+      <rect x="125" y="160" width="45" height="160" fill="#07070f"/>
+      <rect x="172" y="100" width="80" height="220" fill="#050510"/>
+      <rect x="255" y="140" width="55" height="180" fill="#060612"/>
+      <rect x="313" y="110" width="90" height="210" fill="#050510"/>
+      <rect x="406" y="150" width="48" height="170" fill="#07070f"/>
+      <rect x="457" y="118" width="75" height="202" fill="#060611"/>
+      <rect x="535" y="148" width="55" height="172" fill="#060710"/>
+      <rect x="593" y="105" width="107" height="215" fill="#050510"/>
+      <!-- building windows (dim) -->
+      <rect x="58" y="130" width="7" height="5" fill="rgba(255,190,60,.1)"/>
+      <rect x="72" y="130" width="7" height="5" fill="rgba(255,190,60,.06)"/>
+      <rect x="88" y="148" width="7" height="5" fill="rgba(255,190,60,.08)"/>
+      <rect x="180" y="112" width="7" height="5" fill="rgba(255,190,60,.12)"/>
+      <rect x="196" y="112" width="7" height="5" fill="rgba(255,190,60,.07)"/>
+      <rect x="212" y="130" width="7" height="5" fill="rgba(255,190,60,.09)"/>
+      <rect x="320" y="122" width="7" height="5" fill="rgba(255,190,60,.1)"/>
+      <rect x="340" y="122" width="7" height="5" fill="rgba(255,190,60,.06)"/>
+      <rect x="360" y="140" width="7" height="5" fill="rgba(255,190,60,.08)"/>
+      <rect x="464" y="130" width="7" height="5" fill="rgba(255,190,60,.07)"/>
+      <rect x="482" y="130" width="7" height="5" fill="rgba(255,190,60,.1)"/>
+      <rect x="600" y="118" width="7" height="5" fill="rgba(255,190,60,.08)"/>
+      <rect x="620" y="118" width="7" height="5" fill="rgba(255,190,60,.06)"/>
+
+      <!-- Houses (neighborhood) -->
+      <g opacity=".9">
+        <!-- house 1 -->
+        <rect x="30" y="252" width="90" height="68" fill="#0c0c18"/>
+        <polygon points="25,252 75,218 125,252" fill="#0a0a14"/>
+        <rect x="60" y="268" width="22" height="32" fill="#06060e"/><!-- door -->
+        <rect x="35" y="258" width="20" height="16" fill="#0a0a14"/><!-- window -->
+        <rect x="97" y="258" width="20" height="16" fill="rgba(255,190,60,.15)"/><!-- lit window -->
+        <!-- house 2 -->
+        <rect x="170" y="248" width="80" height="72" fill="#0b0b16"/>
+        <polygon points="164,248 210,212 256,248" fill="#09091a"/>
+        <rect x="200" y="268" width="20" height="32" fill="#06060e"/>
+        <rect x="174" y="255" width="18" height="14" fill="rgba(255,190,60,.12)"/>
+        <!-- house 3 -->
+        <rect x="340" y="255" width="85" height="65" fill="#0c0b18"/>
+        <polygon points="334,255 382,215 426,255" fill="#0a0a15"/>
+        <rect x="370" y="270" width="22" height="30" fill="#06060e"/>
+        <rect x="345" y="262" width="18" height="14" fill="rgba(255,190,60,.1)"/>
+        <rect x="398" y="262" width="18" height="14" fill="#07070e"/>
+        <!-- house 4 -->
+        <rect x="510" y="250" width="88" height="70" fill="#0b0b16"/>
+        <polygon points="504,250 554,210 598,250" fill="#09091a"/>
+        <rect x="542" y="268" width="22" height="32" fill="#06060e"/>
+        <rect x="514" y="258" width="18" height="14" fill="rgba(255,190,60,.18)"/>
+      </g>
+
+      <!-- Sidewalk -->
+      <rect x="0" y="320" width="700" height="30" fill="url(#sidewalkGrad)"/>
+      <line x1="0" y1="320" x2="700" y2="320" stroke="#1a1a28" stroke-width="2"/>
+      <line x1="0" y1="350" x2="700" y2="350" stroke="#111118" stroke-width="1"/>
+      <!-- sidewalk cracks -->
+      <line x1="150" y1="320" x2="153" y2="350" stroke="#0e0e1c" stroke-width="1.5"/>
+      <line x1="380" y1="320" x2="377" y2="350" stroke="#0e0e1c" stroke-width="1.5"/>
+      <line x1="560" y1="320" x2="563" y2="350" stroke="#0e0e1c" stroke-width="1.5"/>
+
+      <!-- Road -->
+      <rect x="0" y="350" width="700" height="70" fill="url(#roadGrad)"/>
+      <!-- road dashes -->
+      <rect x="0" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="80" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="160" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="240" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="320" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="400" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="480" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="560" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+      <rect x="640" y="378" width="60" height="3" fill="rgba(255,220,50,.1)" rx="1.5"/>
+
+      <!-- Street lamps -->
+      <g id="lamp1">
+        <rect x="128" y="228" width="5" height="92" fill="#0e0e1c" rx="2"/>
+        <rect x="129" y="228" width="28" height="7" fill="#0e0e1c" rx="3"/>
+        <circle cx="157" cy="228" r="5" fill="#ffe088"/>
+        <ellipse cx="157" cy="228" rx="55" ry="45" fill="url(#lampHalo)" opacity=".7"/>
+      </g>
+      <g id="lamp2">
+        <rect x="478" y="222" width="5" height="98" fill="#0e0e1c" rx="2"/>
+        <rect x="479" y="222" width="28" height="7" fill="#0e0e1c" rx="3"/>
+        <circle cx="507" cy="222" r="5" fill="#ffe088"/>
+        <ellipse cx="507" cy="222" rx="55" ry="45" fill="url(#lampHalo2)" opacity=".7"/>
+      </g>
+
+      <!-- Bus stop sign -->
+      <rect x="640" y="270" width="5" height="50" fill="#0e0e1c"/>
+      <rect x="632" y="262" width="22" height="14" fill="#0e2a4a" rx="2"/>
+      <text x="643" y="272" font-family="Share Tech Mono" font-size="6.5" fill="#4488cc" text-anchor="middle">BUS</text>
+      <text x="643" y="280" font-family="Share Tech Mono" font-size="6.5" fill="#4488cc" text-anchor="middle">STOP</text>
+    </svg>
+
+    <!-- Chris skating character SVG -->
+    <div id="s2-chris" style="position:absolute;bottom:98px;left:-80px;transition:left .016s linear;">
+      <svg width="70" height="110" viewBox="0 0 70 110" style="animation:runBob .4s ease-in-out infinite">
+        <!-- Skateboard -->
+        <g style="animation:skateboard .4s ease-in-out infinite">
+          <rect x="5" y="100" width="60" height="9" rx="4" fill="#6a3510" stroke="#4a2208" stroke-width="1"/>
+          <!-- grip tape -->
+          <rect x="7" y="101" width="56" height="3" rx="1" fill="#2a1a08" opacity=".6"/>
+          <!-- trucks -->
+          <rect x="10" y="109" width="14" height="4" rx="2" fill="#444"/>
+          <rect x="46" y="109" width="14" height="4" rx="2" fill="#444"/>
+          <!-- wheels -->
+          <circle cx="14" cy="112" r="5" fill="#e8e8e8" stroke="#888" stroke-width="1"/>
+          <circle cx="56" cy="112" r="5" fill="#e8e8e8" stroke="#888" stroke-width="1"/>
+          <circle cx="28" cy="112" r="5" fill="#e8e8e8" stroke="#888" stroke-width="1"/>
+          <circle cx="42" cy="112" r="5" fill="#e8e8e8" stroke="#888" stroke-width="1"/>
+          <!-- wheel axle detail -->
+          <circle cx="14" cy="112" r="2" fill="#aaa"/>
+          <circle cx="28" cy="112" r="2" fill="#aaa"/>
+          <circle cx="42" cy="112" r="2" fill="#aaa"/>
+          <circle cx="56" cy="112" r="2" fill="#aaa"/>
+        </g>
+        <!-- Shoes (white Nikes) -->
+        <ellipse cx="18" cy="100" rx="14" ry="5" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+        <ellipse cx="48" cy="100" rx="14" ry="5" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+        <rect x="6" y="96" width="22" height="5" fill="#f0f0f0" rx="2"/>
+        <rect x="38" y="96" width="22" height="5" fill="#f0f0f0" rx="2"/>
+        <!-- Pants (dark) - skating stance bent knees -->
+        <path d="M15,96 L18,72 L30,72 L33,84 L38,72 L52,72 L55,96 L45,96 L38,80 L33,80 L26,96Z" fill="#1a1a2c"/>
+        <!-- Hoodie body -->
+        <path d="M12,70 Q10,50 18,42 Q26,36 35,36 Q44,36 52,42 Q60,50 58,70 L50,70 Q50,55 35,52 Q20,55 20,70Z" fill="#1e2840"/>
+        <!-- Hoodie pocket -->
+        <path d="M24,58 Q35,55 46,58 L46,68 Q35,70 24,68Z" fill="#182035" stroke="#1a2238" stroke-width="1"/>
+        <!-- Backpack -->
+        <rect x="6" y="38" width="18" height="28" rx="3" fill="#1a2a3a"/>
+        <rect x="8" y="40" width="14" height="10" rx="2" fill="#152030"/>
+        <rect x="8" y="52" width="14" height="3" rx="1" fill="#152030"/>
+        <!-- Hoodie arms (leaning fwd on board) -->
+        <path d="M52,50 Q62,54 65,62 Q63,68 60,66 Q58,60 50,56Z" fill="#1e2840"/>
+        <path d="M18,50 Q10,56 8,64 Q10,68 13,66 Q14,60 20,55Z" fill="#1e2840"/>
+        <!-- Hands -->
+        <ellipse cx="62" cy="66" rx="5" ry="4" fill="#c8906a"/>
+        <ellipse cx="10" cy="66" rx="5" ry="4" fill="#c8906a"/>
+        <!-- Neck -->
+        <rect x="30" y="32" width="10" height="8" rx="3" fill="#c8906a"/>
+        <!-- Head -->
+        <circle cx="35" cy="24" r="18" fill="#c8906a"/>
+        <!-- Hair -->
+        <path d="M17,22 Q18,6 35,5 Q52,6 53,22 Q48,12 35,12 Q22,12 17,22Z" fill="#1a1008"/>
+        <!-- Eye -->
+        <ellipse cx="28" cy="22" rx="4" ry="3" fill="#fff"/>
+        <circle cx="29" cy="22" r="2.5" fill="#4a3020"/>
+        <circle cx="29.5" cy="21" r="1" fill="#000"/>
+        <circle cx="30.5" cy="21" r=".5" fill="#fff" opacity=".8"/>
+        <!-- Focused expression - other eye hidden at angle -->
+        <path d="M38,21 Q42,19 46,21" stroke="#1a1008" stroke-width="1.5" fill="none"/>
+        <!-- mouth slight smirk -->
+        <path d="M30,29 Q35,32 40,29" stroke="#a06848" stroke-width="1.2" fill="none"/>
+        <!-- AirPods -->
+        <ellipse cx="17" cy="25" rx="3" ry="4" fill="#f0f0f0"/>
+        <!-- Hoodie hood up slightly -->
+        <path d="M17,14 Q15,8 20,6 Q35,2 50,6 Q55,8 53,14 Q48,10 35,10 Q22,10 17,14Z" fill="#1e2840" opacity=".6"/>
+      </svg>
+    </div>
+
+    <!-- Caption -->
+    <div id="s2-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ffe033;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ffe033;">Chris</div>
+      <div class="cap-text">"NO, no, no! Next bus is in 20 minutes... I'm never gonna make it."</div>
+    </div>
+    <div id="s2-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #aaa;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#aaa;">Narrator</div>
+      <div class="cap-text">He spotted a trail through the dense forest between his neighborhood and school.</div>
+    </div>
+    <div class="scene-tag">02 / THE STREET</div>
+    <div id="s2-loop" class="loop-hud" style="color:#ff4444;opacity:0;transition:opacity .4s;">LOOP 1</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 3 — FOREST / PANEL
+  ══════════════════════════════ -->
+  <div id="s3" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="forestSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#010403"/>
+          <stop offset="50%" stop-color="#020806"/>
+          <stop offset="100%" stop-color="#030d07"/>
+        </linearGradient>
+        <linearGradient id="forestGround" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#060f06"/>
+          <stop offset="100%" stop-color="#030a03"/>
+        </linearGradient>
+        <radialGradient id="panelGlowRed" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,34,68,.6)"/>
+          <stop offset="100%" stop-color="rgba(255,34,68,0)"/>
+        </radialGradient>
+        <filter id="blur3">
+          <feGaussianBlur stdDeviation="3"/>
+        </filter>
+        <linearGradient id="fogGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(6,15,8,0)"/>
+          <stop offset="50%" stop-color="rgba(6,15,8,.7)"/>
+          <stop offset="100%" stop-color="rgba(4,10,5,.9)"/>
+        </linearGradient>
+      </defs>
+      <!-- Sky -->
+      <rect width="700" height="420" fill="url(#forestSky)"/>
+      <!-- Moon through canopy -->
+      <circle cx="180" cy="45" r="22" fill="#ccc898" opacity=".5"/>
+      <circle cx="186" cy="41" r="19" fill="#a09870" opacity=".3"/>
+      <!-- Stars -->
+      <circle cx="60" cy="25" r=".8" fill="#fff" opacity=".4" style="animation:starTwinkle 2.3s ease-in-out infinite"/>
+      <circle cx="260" cy="18" r="1" fill="#fff" opacity=".3" style="animation:starTwinkle 3s ease-in-out infinite .5s"/>
+      <circle cx="420" cy="30" r=".8" fill="#fff" opacity=".4" style="animation:starTwinkle 1.9s ease-in-out infinite 1s"/>
+      <circle cx="560" cy="15" r="1" fill="#fff" opacity=".3" style="animation:starTwinkle 2.7s ease-in-out infinite .3s"/>
+      <circle cx="670" cy="28" r=".7" fill="#fff" opacity=".5" style="animation:starTwinkle 2.1s ease-in-out infinite .8s"/>
+
+      <!-- Far trees (dark bg) -->
+      <g opacity=".5" filter="url(#blur3)">
+        <polygon points="0,280 30,180 60,280" fill="#020d03"/>
+        <polygon points="45,280 80,160 115,280" fill="#020c03"/>
+        <polygon points="100,280 130,195 160,280" fill="#020d03"/>
+        <polygon points="580,280 620,155 660,280" fill="#020c03"/>
+        <polygon points="630,280 665,175 700,280" fill="#020d03"/>
+      </g>
+
+      <!-- Mid trees -->
+      <g opacity=".8">
+        <rect x="28" y="205" width="10" height="115" fill="#0d0702"/>
+        <polygon points="33,200 8,260 58,260" fill="#0a1e0c"/>
+        <polygon points="33,225 12,272 54,272" fill="#0c2010"/>
+        <polygon points="33,250 15,285 51,285" fill="#0e2212"/>
+
+        <rect x="100" y="215" width="8" height="105" fill="#0c0602"/>
+        <polygon points="104,210 82,268 126,268" fill="#091c0a"/>
+        <polygon points="104,235 86,278 122,278" fill="#0b1e0c"/>
+
+        <rect x="560" y="200" width="10" height="120" fill="#0d0702"/>
+        <polygon points="565,195 540,258 590,258" fill="#0a1e0c"/>
+        <polygon points="565,218 543,270 587,270" fill="#0c2010"/>
+        <polygon points="565,244 548,284 582,284" fill="#0e2212"/>
+
+        <rect x="630" y="210" width="9" height="110" fill="#0c0602"/>
+        <polygon points="634,205 610,265 658,265" fill="#091c0a"/>
+        <polygon points="634,228 614,276 654,276" fill="#0b1e0c"/>
+
+        <rect x="670" y="218" width="8" height="102" fill="#0b0601"/>
+        <polygon points="674,213 655,268 693,268" fill="#0a1d09"/>
+        <polygon points="674,238 658,280 690,280" fill="#0c1f0b"/>
+      </g>
+
+      <!-- Near trees (foreground) -->
+      <g>
+        <rect x="-5" y="240" width="14" height="180" fill="#0a0501"/>
+        <polygon points="2,230 -28,310 32,310" fill="#0c2210"/>
+        <polygon points="2,260 -25,325 29,325" fill="#102814"/>
+        <polygon points="2,290 -22,340 26,340" fill="#122a16"/>
+
+        <rect x="680" y="235" width="14" height="185" fill="#0a0501"/>
+        <polygon points="687,225 657,308 717,308" fill="#0c2210"/>
+        <polygon points="687,255 660,322 714,322" fill="#102814"/>
+        <polygon points="687,285 663,338 711,338" fill="#122a16"/>
+      </g>
+
+      <!-- Ground -->
+      <rect x="0" y="310" width="700" height="110" fill="url(#forestGround)"/>
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#0a1a0a" stroke-width="2"/>
+      <!-- path dirt -->
+      <ellipse cx="350" cy="350" rx="120" ry="30" fill="rgba(20,12,5,.4)"/>
+      <!-- Fallen log -->
+      <ellipse cx="500" cy="315" rx="80" ry="14" fill="#1a0d04" stroke="#2a1a06" stroke-width="2"/>
+      <ellipse cx="420" cy="316" rx="14" ry="14" fill="#180c03" stroke="#2a1a06" stroke-width="1.5"/><!-- end -->
+      <line x1="420" y1="310" x2="420" y2="322" stroke="#1a0d04" stroke-width="2"/><!-- ring -->
+      <!-- roots -->
+      <path d="M420,316 Q400,305 388,320" stroke="#1a0d04" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M420,316 Q405,330 390,325" stroke="#180c03" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M420,316 Q408,298 395,305" stroke="#1a0d04" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <!-- moss -->
+      <ellipse cx="470" cy="303" rx="28" ry="5" fill="#0c1e0a" opacity=".7"/>
+      <ellipse cx="520" cy="302" rx="22" ry="4" fill="#0c1e0a" opacity=".5"/>
+
+      <!-- Metal panel (half buried) -->
+      <g style="animation:panelPulse 2s ease-in-out infinite" id="zone47panel">
+        <!-- ground disturbed around panel -->
+        <ellipse cx="590" cy="318" rx="40" ry="10" fill="#0a1408" opacity=".8"/>
+        <!-- panel housing -->
+        <rect x="560" y="300" width="60" height="20" rx="3" fill="#0d1a0d" stroke="#1a2a1a" stroke-width="1.5"/>
+        <!-- panel face -->
+        <rect x="563" y="302" width="54" height="16" rx="2" fill="#080e08"/>
+        <!-- vines/ivy over it -->
+        <path d="M556,304 Q565,296 575,305 Q580,298 588,306" stroke="#0a1a08" stroke-width="3" fill="none" opacity=".8"/>
+        <!-- warning glow -->
+        <ellipse cx="590" cy="310" rx="35" ry="18" fill="url(#panelGlowRed)" opacity=".6"/>
+        <!-- status light -->
+        <circle cx="590" cy="310" r="5" fill="#ff2244"/>
+        <circle cx="590" cy="310" r="3" fill="#ff6688"/>
+        <!-- label -->
+        <text x="590" y="297" font-family="Share Tech Mono" font-size="7" fill="rgba(255,34,68,.8)" text-anchor="middle" letter-spacing="2">ZONE 47</text>
+        <!-- bolt screws -->
+        <circle cx="568" cy="305" r="2" fill="#1a2a1a" stroke="#222" stroke-width=".5"/>
+        <circle cx="612" cy="305" r="2" fill="#1a2a1a" stroke="#222" stroke-width=".5"/>
+        <circle cx="568" cy="315" r="2" fill="#1a2a1a" stroke="#222" stroke-width=".5"/>
+        <circle cx="612" cy="315" r="2" fill="#1a2a1a" stroke="#222" stroke-width=".5"/>
+      </g>
+
+      <!-- Fog layer -->
+      <rect x="0" y="285" width="700" height="135" fill="url(#fogGrad)" opacity=".6"/>
+    </svg>
+
+    <!-- CREATURE -->
+    <div id="s3-creature" style="position:absolute;bottom:105px;right:-200px;transition:right 1.5s cubic-bezier(.2,.8,.4,1);opacity:0;">
+      <svg width="220" height="120" viewBox="0 0 220 120" style="animation:creatureGlitch 3s ease-in-out infinite">
+        <defs>
+          <radialGradient id="eyeGlow1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff4466"/>
+            <stop offset="100%" stop-color="#ff0022"/>
+          </radialGradient>
+        </defs>
+        <!-- shadow under -->
+        <ellipse cx="110" cy="118" rx="80" ry="8" fill="rgba(0,0,0,.5)"/>
+        <!-- Tail -->
+        <path d="M35,70 Q15,80 8,60 Q4,45 18,50" stroke="#0d0a0e" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M35,70 Q15,80 8,60 Q4,45 18,50" stroke="#130f14" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <!-- Body (elongated beast) -->
+        <ellipse cx="110" cy="72" rx="75" ry="28" fill="#0d0a0e"/>
+        <ellipse cx="108" cy="70" rx="73" ry="26" fill="#110d12"/>
+        <!-- texture ridges on back -->
+        <path d="M60,50 Q90,44 120,48 Q150,44 175,50" stroke="#0a080b" stroke-width="3" fill="none"/>
+        <path d="M70,54 Q100,48 125,52 Q152,48 170,54" stroke="#0a080b" stroke-width="2" fill="none"/>
+        <!-- Head (elongated, angular) -->
+        <path d="M160,62 Q180,50 200,55 Q210,65 205,78 Q195,85 175,80 Q160,75 158,65Z" fill="#0d0a0e"/>
+        <path d="M162,64 Q180,53 198,58 Q207,66 203,76 Q194,82 176,78 Q163,73 160,66Z" fill="#130d14"/>
+        <!-- jaw -->
+        <path d="M163,72 Q178,80 200,74 Q206,78 203,84 Q190,90 168,82Z" fill="#0a0808"/>
+        <!-- teeth -->
+        <path d="M170,78 L172,85 M178,79 L180,87 M186,78 L188,86 M194,76 L196,84" stroke="#1a1218" stroke-width="2" stroke-linecap="round"/>
+        <!-- HORNS -->
+        <path d="M175,52 Q170,30 165,22" stroke="#0a0808" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M175,52 Q170,30 165,22" stroke="#130f12" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M188,50 Q188,28 192,18" stroke="#0a0808" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M188,50 Q188,28 192,18" stroke="#130f12" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- horn tips -->
+        <circle cx="164" cy="21" r="3" fill="#1a1215"/>
+        <circle cx="192" cy="17" r="3" fill="#1a1215"/>
+        <!-- Eyes (RED GLOWING) -->
+        <circle cx="183" cy="63" r="7" fill="#200010" style="animation:eyeGlow 1.5s ease-in-out infinite"/>
+        <circle cx="183" cy="63" r="5" fill="url(#eyeGlow1)"/>
+        <circle cx="183" cy="63" r="2.5" fill="#ff0033"/>
+        <circle cx="181" cy="61" r="1" fill="#fff" opacity=".5"/>
+        <circle cx="197" cy="62" r="6" fill="#200010" style="animation:eyeGlow 1.5s ease-in-out infinite .3s"/>
+        <circle cx="197" cy="62" r="4" fill="url(#eyeGlow1)"/>
+        <circle cx="197" cy="62" r="2" fill="#ff0033"/>
+        <!-- LEGS (4 limbs on ground) -->
+        <!-- front right -->
+        <path d="M155,85 Q148,100 150,115" stroke="#0d0a0e" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M150,115 Q145,118 140,115 Q138,112 143,110" stroke="#0d0a0e" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <!-- front left -->
+        <path d="M135,88 Q128,104 130,118" stroke="#0d0a0e" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <path d="M130,118 Q126,120 122,117 Q120,114 125,112" stroke="#0d0a0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- back right -->
+        <path d="M80,86 Q75,102 78,116" stroke="#0d0a0e" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M78,116 Q72,120 68,116 Q66,112 72,110" stroke="#0d0a0e" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <!-- back left -->
+        <path d="M58,84 Q52,100 55,114" stroke="#0d0a0e" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <path d="M55,114 Q50,118 46,114 Q44,111 50,109" stroke="#0d0a0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- glitch chromatic copy -->
+        <ellipse cx="114" cy="72" rx="73" ry="26" fill="none" stroke="rgba(255,0,60,.15)" stroke-width="2" transform="translate(4,0)"/>
+        <ellipse cx="106" cy="72" rx="73" ry="26" fill="none" stroke="rgba(0,255,240,.1)" stroke-width="2" transform="translate(-4,0)"/>
+      </svg>
+    </div>
+
+    <!-- Chris crouching at panel -->
+    <div id="s3-chris" style="position:absolute;bottom:108px;left:380px;opacity:0;transition:opacity .5s;">
+      <svg width="55" height="90" viewBox="0 0 55 90">
+        <!-- Shoes -->
+        <ellipse cx="12" cy="85" rx="12" ry="4" fill="#e8e8e8"/>
+        <ellipse cx="38" cy="85" rx="12" ry="4" fill="#e8e8e8"/>
+        <!-- pants crouched -->
+        <path d="M10,82 L14,60 L26,60 L28,72 L32,60 L42,60 L44,82 L36,82 L28,68 L24,68 L18,82Z" fill="#1a1a2c"/>
+        <!-- Body leaning forward -->
+        <path d="M8,58 Q6,44 16,38 Q24,34 28,34 Q36,34 42,38 Q50,44 48,58Z" fill="#1e2840"/>
+        <!-- Backpack -->
+        <rect x="2" y="36" width="14" height="22" rx="2" fill="#1a2a3a"/>
+        <!-- Head looking down -->
+        <circle cx="32" cy="26" r="14" fill="#c8906a"/>
+        <path d="M18,22 Q20,10 32,9 Q44,10 46,22 Q40,14 32,14 Q24,14 18,22Z" fill="#1a1008"/>
+        <ellipse cx="26" cy="24" rx="3.5" ry="2.5" fill="#fff"/>
+        <circle cx="27" cy="24" r="2" fill="#4a3020"/>
+        <!-- arms reaching to panel -->
+        <path d="M42,46 Q52,52 56,58" stroke="#1e2840" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="57" cy="60" rx="5" ry="4" fill="#c8906a"/>
+        <path d="M16,46 Q8,50 6,56" stroke="#1e2840" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <ellipse cx="4" cy="58" rx="5" ry="4" fill="#c8906a"/>
+        <!-- flashlight beam from phone -->
+        <path d="M56,60 L80,68 L80,72 L56,64Z" fill="rgba(255,240,180,.1)"/>
+      </svg>
+    </div>
+
+    <div id="s3-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #00eeff;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#00eeff;">Chris</div>
+      <div class="cap-text">"Is that a bear?... wait. That metal panel — ZONE 47. There it is again."</div>
+    </div>
+    <div id="s3-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ff2244;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ff2244;">???</div>
+      <div class="cap-text">A figure. On all fours. Red eyes. It doesn't walk — it GLITCHES forward.</div>
+    </div>
+
+    <div class="scene-tag">03 / THE FOREST</div>
+    <div id="s3-loop" class="loop-hud" style="color:#ff7700;opacity:0;transition:opacity .4s;">LOOP 2</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 4 — ZONE 47 LAB
+  ══════════════════════════════ -->
+  <div id="s4" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="labWall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0e0e0e"/>
+          <stop offset="100%" stop-color="#0a0a0a"/>
+        </linearGradient>
+        <linearGradient id="labFloor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0c0c0c"/>
+          <stop offset="100%" stop-color="#080808"/>
+        </linearGradient>
+        <radialGradient id="tubeGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,255,100,.25)"/>
+          <stop offset="100%" stop-color="rgba(0,255,100,0)"/>
+        </radialGradient>
+        <linearGradient id="tubeFluid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(0,255,100,.05)"/>
+          <stop offset="50%" stop-color="rgba(0,255,100,.2)"/>
+          <stop offset="100%" stop-color="rgba(0,255,100,.35)"/>
+        </linearGradient>
+        <filter id="glow4">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Walls -->
+      <rect width="700" height="420" fill="url(#labWall)"/>
+      <!-- Ceiling -->
+      <rect width="700" height="68" fill="#111"/>
+      <line x1="0" y1="68" x2="700" y2="68" stroke="#1a1a1a" stroke-width="2"/>
+      <!-- Ceiling tiles -->
+      <rect x="0" y="2" width="698" height="62" fill="none" stroke="#141414" stroke-width="1"/>
+      <!-- Ceiling panels grid -->
+      <line x1="140" y1="2" x2="140" y2="68" stroke="#141414" stroke-width="1"/>
+      <line x1="280" y1="2" x2="280" y2="68" stroke="#141414" stroke-width="1"/>
+      <line x1="420" y1="2" x2="420" y2="68" stroke="#141414" stroke-width="1"/>
+      <line x1="560" y1="2" x2="560" y2="68" stroke="#141414" stroke-width="1"/>
+      <line x1="0" y1="34" x2="700" y2="34" stroke="#141414" stroke-width="1"/>
+      <!-- Fluorescent lights -->
+      <rect x="20" y="60" width="100" height="6" rx="3" fill="rgba(180,220,190,.09)" style="animation:labFlicker 8s ease-in-out infinite"/>
+      <rect x="20" y="60" width="100" height="6" rx="3" fill="none" stroke="rgba(180,220,190,.2)" stroke-width="1" rx="3"/>
+      <rect x="160" y="60" width="100" height="6" rx="3" fill="rgba(180,220,190,.09)"/>
+      <rect x="300" y="60" width="100" height="6" rx="3" fill="rgba(180,220,190,.09)"/>
+      <rect x="440" y="60" width="100" height="6" rx="3" fill="rgba(180,220,190,.09)" style="animation:labFlicker 12s ease-in-out infinite 2s"/>
+      <rect x="580" y="60" width="100" height="6" rx="3" fill="rgba(180,220,190,.09)"/>
+      <!-- Light cones -->
+      <path d="M70,66 L20,320 L120,320Z" fill="rgba(180,220,190,.015)"/>
+      <path d="M210,66 L160,320 L260,320Z" fill="rgba(180,220,190,.012)"/>
+      <path d="M350,66 L300,320 L400,320Z" fill="rgba(180,220,190,.015)"/>
+      <path d="M490,66 L440,320 L540,320Z" fill="rgba(180,220,190,.012)"/>
+      <path d="M630,66 L580,320 L680,320Z" fill="rgba(180,220,190,.015)"/>
+
+      <!-- Floor -->
+      <rect x="0" y="320" width="700" height="100" fill="url(#labFloor)"/>
+      <line x1="0" y1="320" x2="700" y2="320" stroke="#1a1a1a" stroke-width="1.5"/>
+      <!-- Floor tiles -->
+      <line x1="100" y1="320" x2="100" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="200" y1="320" x2="200" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="300" y1="320" x2="300" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="400" y1="320" x2="400" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="500" y1="320" x2="500" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="600" y1="320" x2="600" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="0" y1="360" x2="700" y2="360" stroke="#111" stroke-width="1"/>
+      <!-- Floor reflection -->
+      <rect x="0" y="320" width="700" height="100" fill="url(#labFloor)" opacity=".5"/>
+
+      <!-- Wall panels -->
+      <rect x="0" y="80" width="160" height="240" fill="#101010" stroke="#181818" stroke-width="1"/>
+      <rect x="10" y="90" width="140" height="50" fill="#0d0d0d" stroke="#151515" stroke-width="1"/>
+      <rect x="10" y="148" width="140" height="80" fill="#0d0d0d" stroke="#151515" stroke-width="1"/>
+      <rect x="10" y="236" width="140" height="74" fill="#0d0d0d" stroke="#151515" stroke-width="1"/>
+      <!-- Wall panel indicators -->
+      <circle cx="140" cy="98" r="4" fill="#0a2a0a" stroke="#1a3a1a" stroke-width="1"/>
+      <circle cx="140" cy="165" r="4" fill="#2a0a0a" stroke="#3a1a1a" stroke-width="1"/>
+      <circle cx="140" cy="268" r="4" fill="#1a1a0a" stroke="#2a2a1a" stroke-width="1"/>
+      <!-- blinky dots -->
+      <circle cx="140" cy="98" r="2.5" fill="#00ff44" opacity=".8" style="animation:blink 2s ease-in-out infinite"/>
+      <circle cx="140" cy="165" r="2.5" fill="#ff2244" opacity=".8" style="animation:blink 1.3s ease-in-out infinite .5s"/>
+
+      <!-- Right wall panels -->
+      <rect x="540" y="80" width="160" height="240" fill="#101010" stroke="#181818" stroke-width="1"/>
+      <rect x="550" y="90" width="140" height="220" fill="#0d0d0d" stroke="#151515" stroke-width="1"/>
+
+      <!-- Bulletin board -->
+      <rect x="180" y="88" width="160" height="130" rx="2" fill="#18140a" stroke="#222012" stroke-width="2"/>
+      <!-- cork board texture -->
+      <rect x="182" y="90" width="156" height="126" rx="1" fill="#1e1808" opacity=".9"/>
+      <!-- pinned photos/notes -->
+      <rect x="190" y="96" width="44" height="34" fill="#d8d0c0" transform="rotate(-3,212,113)"/>
+      <rect x="190" y="96" width="44" height="34" fill="#aaa090" opacity=".3" transform="rotate(-3,212,113)"/>
+      <!-- photo: blurry chris face sketch -->
+      <circle cx="210" cy="110" r="10" fill="#c8906a" transform="rotate(-3,212,113)"/>
+      <ellipse cx="210" cy="100" rx="11" ry="7" fill="#1a1008" transform="rotate(-3,212,113)"/>
+      <!-- red pin -->
+      <circle cx="213" cy="95" r="3" fill="#ff2244"/>
+      <rect x="239" y="98" width="38" height="28" fill="#e8e0d0" transform="rotate(4,258,112)"/>
+      <!-- text lines on note -->
+      <line x1="242" y1="104" x2="274" y2="104" stroke="#888" stroke-width="1.5" transform="rotate(4,258,112)"/>
+      <line x1="242" y1="110" x2="270" y2="110" stroke="#888" stroke-width="1" transform="rotate(4,258,112)"/>
+      <line x1="242" y1="116" x2="272" y2="116" stroke="#888" stroke-width="1" transform="rotate(4,258,112)"/>
+      <circle cx="255" cy="97" r="3" fill="#ffe033"/>
+      <!-- bottom notes -->
+      <rect x="192" y="136" width="48" height="34" fill="#e0d8c8" transform="rotate(2,216,153)"/>
+      <text x="196" y="148" font-family="Share Tech Mono" font-size="6" fill="#cc2244" transform="rotate(2,216,153)">PROJECT</text>
+      <text x="196" y="156" font-family="Share Tech Mono" font-size="6" fill="#cc2244" transform="rotate(2,216,153)">SANCHEZ</text>
+      <circle cx="218" cy="135" r="3" fill="#ff2244"/>
+      <rect x="250" y="138" width="40" height="30" fill="#d8d0c0" transform="rotate(-2,270,153)"/>
+      <!-- red string connecting notes -->
+      <line x1="213" y1="97" x2="255" y2="97" stroke="rgba(220,40,40,.5)" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="218" y1="135" x2="213" y2="113" stroke="rgba(220,40,40,.4)" stroke-width="1" stroke-dasharray="3,2"/>
+      <!-- board label -->
+      <text x="260" y="215" font-family="Share Tech Mono" font-size="7" fill="#333" text-anchor="middle">ZONE 47 — CLASSIFIED</text>
+
+      <!-- Containment TUBE (main, right side) -->
+      <!-- outer casing -->
+      <rect x="548" y="78" width="60" height="240" rx="6" fill="#0a140a" stroke="#1a2a1a" stroke-width="2"/>
+      <!-- inner tube -->
+      <rect x="556" y="82" width="44" height="232" rx="4" fill="rgba(0,0,0,.6)"/>
+      <!-- fluid fill -->
+      <rect x="558" y="84" width="40" height="228" rx="3" fill="url(#tubeFluid)"/>
+      <!-- glow -->
+      <ellipse cx="578" cy="200" rx="50" ry="130" fill="url(#tubeGlow)" opacity=".5"/>
+      <!-- bubbles (animated) -->
+      <circle cx="565" cy="280" r="3" fill="rgba(0,255,100,.3)" style="animation:tubeRise 3s linear infinite"/>
+      <circle cx="574" cy="260" r="2" fill="rgba(0,255,100,.25)" style="animation:tubeRise 4s linear infinite .8s"/>
+      <circle cx="583" cy="300" r="2.5" fill="rgba(0,255,100,.2)" style="animation:tubeRise 3.5s linear infinite 1.6s"/>
+      <circle cx="591" cy="270" r="1.5" fill="rgba(0,255,100,.3)" style="animation:tubeRise 2.8s linear infinite 2.2s"/>
+      <!-- tube connectors/pipes -->
+      <rect x="548" y="120" width="10" height="6" rx="2" fill="#1a2a1a"/>
+      <rect x="608" y="120" width="10" height="6" rx="2" fill="#1a2a1a"/>
+      <rect x="548" y="200" width="10" height="6" rx="2" fill="#1a2a1a"/>
+      <rect x="608" y="200" width="10" height="6" rx="2" fill="#1a2a1a"/>
+      <!-- tube label -->
+      <text x="578" y="326" font-family="Share Tech Mono" font-size="7" fill="rgba(0,255,100,.5)" text-anchor="middle" letter-spacing="2">ORIGINAL</text>
+      <text x="578" y="335" font-family="Share Tech Mono" font-size="6" fill="rgba(0,255,100,.3)" text-anchor="middle">SPECIMEN 001</text>
+
+      <!-- Chris's duplicate in tube (ghostly) -->
+      <!-- sleeping/floating form -->
+      <g opacity=".5" filter="url(#glow4)">
+        <!-- body floating -->
+        <ellipse cx="578" cy="210" rx="18" ry="8" fill="#c8906a" opacity=".4"/><!-- torso -->
+        <circle cx="578" cy="175" r="14" fill="#c8906a" opacity=".5"/><!-- head -->
+        <ellipse cx="578" cy="168" rx="15" ry="9" fill="#1a1008" opacity=".5"/><!-- hair -->
+        <!-- hospital gown -->
+        <path d="M564,205 Q570,240 565,280 Q578,285 591,280 Q586,240 592,205Z" fill="#ddd" opacity=".15"/>
+        <!-- closed eyes -->
+        <line x1="571" y1="177" x2="578" y2="177" stroke="#4a3020" stroke-width="1.5" opacity=".6"/>
+        <line x1="580" y1="177" x2="587" y2="177" stroke="#4a3020" stroke-width="1.5" opacity=".6"/>
+        <!-- IVs/wires -->
+        <line x1="578" y1="210" x2="612" y2="195" stroke="rgba(0,255,100,.3)" stroke-width="1.5"/>
+        <line x1="578" y1="210" x2="544" y2="200" stroke="rgba(0,255,100,.3)" stroke-width="1.5"/>
+      </g>
+
+      <!-- Pipes along ceiling -->
+      <rect x="0" y="68" width="700" height="12" fill="#131313"/>
+      <rect x="0" y="80" width="700" height="5" fill="#1a1a1a"/>
+      <!-- pipe joints -->
+      <circle cx="175" cy="74" r="5" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+      <circle cx="350" cy="74" r="5" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+      <circle cx="525" cy="74" r="5" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+
+      <!-- Service cart (Chris hides behind) -->
+      <rect x="355" y="255" width="80" height="65" rx="3" fill="#141414" stroke="#1e1e1e" stroke-width="2"/>
+      <rect x="355" y="265" width="80" height="2" fill="#1e1e1e"/>
+      <rect x="355" y="280" width="80" height="2" fill="#1e1e1e"/>
+      <rect x="355" y="295" width="80" height="2" fill="#1e1e1e"/>
+      <!-- rags hanging -->
+      <rect x="358" y="265" width="12" height="52" fill="#181818" opacity=".9"/>
+      <rect x="374" y="265" width="10" height="50" fill="#141414" opacity=".8"/>
+      <rect x="388" y="265" width="12" height="55" fill="#181818" opacity=".9"/>
+      <rect x="403" y="265" width="10" height="48" fill="#141414" opacity=".8"/>
+      <rect x="416" y="265" width="11" height="53" fill="#181818" opacity=".9"/>
+      <!-- cart wheels -->
+      <circle cx="368" cy="322" r="7" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
+      <circle cx="422" cy="322" r="7" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
+      <!-- Chris peeking through rags - just eyes visible -->
+      <ellipse cx="395" cy="285" rx="4" ry="3" fill="#fff" opacity=".8"/>
+      <circle cx="395" cy="285" r="2.5" fill="#4a3020"/>
+      <circle cx="395.5" cy="284" r="1" fill="#000"/>
+
+      <!-- Door at end of hallway -->
+      <rect x="620" y="90" width="70" height="230" fill="#0c0c0c" stroke="#181818" stroke-width="2"/>
+      <rect x="623" y="93" width="64" height="224" fill="#0a0a0a"/>
+      <!-- door handle -->
+      <rect x="628" y="200" width="18" height="5" rx="2" fill="#222" stroke="#2a2a2a" stroke-width="1"/>
+      <!-- warning stripe -->
+      <rect x="620" y="90" width="70" height="8" fill="#1a1a00"/>
+      <!-- biohazard sign -->
+      <text x="655" y="130" font-family="Share Tech Mono" font-size="18" fill="#2a2a10" text-anchor="middle">☣</text>
+      <text x="655" y="148" font-family="Share Tech Mono" font-size="6" fill="#2a2a10" text-anchor="middle">RESTRICTED</text>
+    </svg>
+
+    <!-- Hazmat scientist figure 1 -->
+    <div id="s4-haz1" style="position:absolute;bottom:100px;left:60px;opacity:0;transition:opacity .6s;">
+      <svg width="70" height="140" viewBox="0 0 70 140">
+        <!-- boots -->
+        <ellipse cx="18" cy="136" rx="16" ry="5" fill="#1a2a1a"/>
+        <ellipse cx="50" cy="136" rx="16" ry="5" fill="#1a2a1a"/>
+        <rect x="6" y="122" width="24" height="14" rx="3" fill="#1a2a1a"/>
+        <rect x="40" y="122" width="24" height="14" rx="3" fill="#1a2a1a"/>
+        <!-- legs (thick suit) -->
+        <rect x="10" y="80" width="20" height="46" rx="4" fill="#2a4a2a"/>
+        <rect x="40" y="80" width="20" height="46" rx="4" fill="#2a4a2a"/>
+        <!-- suit seam -->
+        <line x1="18" y1="80" x2="18" y2="126" stroke="#1e3a1e" stroke-width="1"/>
+        <line x1="52" y1="80" x2="52" y2="126" stroke="#1e3a1e" stroke-width="1"/>
+        <!-- body (bulky) -->
+        <rect x="5" y="38" width="60" height="48" rx="8" fill="#2a4a2a"/>
+        <!-- suit details -->
+        <rect x="22" y="50" width="26" height="16" rx="2" fill="#1e3a1e"/><!-- chest panel -->
+        <circle cx="28" cy="57" r="3" fill="#0a0" opacity=".7"/>
+        <circle cx="35" cy="57" r="3" fill="#aa0" opacity=".5"/>
+        <circle cx="42" cy="57" r="3" fill="#00a" opacity=".3"/>
+        <!-- oxygen tank on back - implied -->
+        <!-- arms (thick) -->
+        <rect x="-8" y="40" width="18" height="34" rx="5" fill="#2a4a2a"/>
+        <rect x="60" y="40" width="18" height="34" rx="5" fill="#2a4a2a"/>
+        <!-- gloves -->
+        <ellipse cx="1" cy="76" rx="10" ry="7" fill="#1a3a1a"/>
+        <ellipse cx="69" cy="76" rx="10" ry="7" fill="#1a3a1a"/>
+        <!-- neck seal -->
+        <rect x="22" y="30" width="26" height="12" rx="4" fill="#1e3a1e"/>
+        <!-- helmet -->
+        <circle cx="35" cy="22" r="22" fill="#2a4a2a"/>
+        <circle cx="35" cy="22" r="20" fill="#243e24"/>
+        <!-- visor -->
+        <ellipse cx="37" cy="22" rx="14" ry="11" fill="rgba(0,120,200,.6)" stroke="rgba(0,180,255,.3)" stroke-width="1"/>
+        <!-- visor reflection -->
+        <ellipse cx="31" cy="16" rx="5" ry="3" fill="rgba(255,255,255,.15)" transform="rotate(-20,31,16)"/>
+        <!-- inside visor: blurry face -->
+        <circle cx="33" cy="22" r="4" fill="rgba(180,120,80,.3)" opacity=".5"/>
+        <circle cx="41" cy="22" r="4" fill="rgba(180,120,80,.3)" opacity=".5"/>
+        <!-- helmet bolts -->
+        <circle cx="14" cy="10" r="2" fill="#1a3a1a" stroke="#0e2a0e" stroke-width=".5"/>
+        <circle cx="56" cy="10" r="2" fill="#1a3a1a" stroke="#0e2a0e" stroke-width=".5"/>
+        <!-- Name tag -->
+        <rect x="22" y="68" width="26" height="10" rx="1" fill="#ddd" opacity=".8"/>
+        <rect x="24" y="70" width="18" height="2" rx="1" fill="#888"/>
+        <rect x="24" y="74" width="14" height="1.5" rx=".5" fill="#888"/>
+      </svg>
+    </div>
+
+    <!-- Hazmat scientist figure 2 (back turned, examining tube) -->
+    <div id="s4-haz2" style="position:absolute;bottom:100px;right:155px;opacity:0;transition:opacity .6s;">
+      <svg width="70" height="140" viewBox="0 0 70 140">
+        <!-- back view -->
+        <ellipse cx="18" cy="136" rx="16" ry="5" fill="#1a2a1a"/>
+        <ellipse cx="52" cy="136" rx="16" ry="5" fill="#1a2a1a"/>
+        <rect x="6" y="122" width="24" height="14" rx="3" fill="#1a2a1a"/>
+        <rect x="40" y="122" width="24" height="14" rx="3" fill="#1a2a1a"/>
+        <rect x="10" y="80" width="20" height="46" rx="4" fill="#284828"/>
+        <rect x="40" y="80" width="20" height="46" rx="4" fill="#284828"/>
+        <rect x="5" y="38" width="60" height="48" rx="8" fill="#284828"/>
+        <!-- oxygen tank on back -->
+        <rect x="18" y="42" width="26" height="38" rx="8" fill="#1e3a1e" stroke="#162e16" stroke-width="1"/>
+        <rect x="24" y="48" width="14" height="26" rx="4" fill="#162e16"/>
+        <circle cx="31" cy="44" r="4" fill="#0a0a0a" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- arms (reaching to tube) -->
+        <rect x="-6" y="42" width="16" height="32" rx="5" fill="#284828"/>
+        <rect x="60" y="42" width="16" height="32" rx="5" fill="#284828"/>
+        <ellipse cx="0" cy="76" rx="9" ry="7" fill="#1e3a1e"/>
+        <ellipse cx="70" cy="76" rx="9" ry="7" fill="#1e3a1e"/>
+        <rect x="22" y="30" width="26" height="12" rx="4" fill="#1e3a1e"/>
+        <circle cx="35" cy="22" r="22" fill="#284828"/>
+        <circle cx="35" cy="22" r="20" fill="#223e22"/>
+        <!-- back of helmet -->
+        <circle cx="35" cy="22" r="16" fill="#1e3a1e" opacity=".5"/>
+        <!-- oxygen tube from helmet -->
+        <path d="M35,42 Q30,50 20,55" stroke="#1a3a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Chris hiding behind cart (eyes only visible) -- just the peeking eyes in SVG above -->
+
+    <!-- Phone notification -->
+    <div id="s4-phone" style="position:absolute;bottom:140px;left:25px;opacity:0;transition:opacity .5s;">
+      <svg width="130" height="80" viewBox="0 0 130 80">
+        <rect width="130" height="80" rx="8" fill="#0a0a16" stroke="#1e1e2e" stroke-width="2"/>
+        <rect x="5" y="10" width="120" height="60" rx="4" fill="#050510"/>
+        <!-- notification banner -->
+        <rect x="8" y="13" width="114" height="28" rx="3" fill="#0d0d1a" stroke="rgba(0,255,100,.3)" stroke-width="1"/>
+        <text x="15" y="24" font-family="Share Tech Mono" font-size="6.5" fill="rgba(0,255,100,.9)">⚠ NOTE — 6:49 AM</text>
+        <text x="15" y="34" font-family="Share Tech Mono" font-size="6" fill="#888">DO NOT GO TO SCHOOL.</text>
+        <text x="15" y="42" font-family="Share Tech Mono" font-size="6" fill="#888">ITS A LOOP. ZONE 47</text>
+        <text x="15" y="50" font-family="Share Tech Mono" font-size="6" fill="rgba(0,255,100,.7)">IS THE KEY. -CHRIS</text>
+        <!-- glitch line across screen -->
+        <rect x="5" y="38" width="120" height="1" fill="rgba(0,255,240,.2)" opacity=".6" style="animation:labFlicker 2s step-end infinite"/>
+        <!-- home bar -->
+        <rect x="50" y="68" width="30" height="3" rx="1.5" fill="#222"/>
+        <!-- camera -->
+        <circle cx="65" cy="5" r="2" fill="#111"/>
+      </svg>
+    </div>
+
+    <div id="s4-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #88cc44;max-width:420px;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#88cc44;">Scientist</div>
+      <div class="cap-text">"Project Sanchez is lost. The tracker isn't working. Find him. Bring him back."</div>
+    </div>
+    <div id="s4-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ff2244;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ff2244;">Chris (internal)</div>
+      <div class="cap-text">That's… me. In that tube. That's me.</div>
+    </div>
+
+    <div class="scene-tag">04 / ZONE 47 LAB</div>
+    <div id="s4-loop" class="loop-hud" style="color:#ffaa00;opacity:0;transition:opacity .4s;">LOOP 3</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 5 — THE MIRROR
+  ══════════════════════════════ -->
+  <div id="s5" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="bathroomWall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0a0a10"/>
+          <stop offset="100%" stop-color="#080808"/>
+        </linearGradient>
+        <radialGradient id="mirrorLight" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="rgba(200,220,255,.08)"/>
+          <stop offset="100%" stop-color="rgba(200,220,255,0)"/>
+        </radialGradient>
+        <radialGradient id="stitchBlood" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,30,50,.4)"/>
+          <stop offset="100%" stop-color="rgba(255,30,50,0)"/>
+        </radialGradient>
+        <filter id="mirrorBlur">
+          <feGaussianBlur stdDeviation=".5"/>
+        </filter>
+      </defs>
+
+      <!-- Bathroom wall -->
+      <rect width="700" height="420" fill="url(#bathroomWall)"/>
+      <!-- Tiles (small square pattern) -->
+      <g stroke="#0f0f18" stroke-width=".5" fill="none">
+        <rect x="0" y="0" width="700" height="420"/>
+        <!-- horizontal grout lines -->
+        <line x1="0" y1="40" x2="700" y2="40"/>
+        <line x1="0" y1="80" x2="700" y2="80"/>
+        <line x1="0" y1="120" x2="700" y2="120"/>
+        <line x1="0" y1="160" x2="700" y2="160"/>
+        <line x1="0" y1="200" x2="700" y2="200"/>
+        <line x1="0" y1="240" x2="700" y2="240"/>
+        <line x1="0" y1="280" x2="700" y2="280"/>
+        <line x1="0" y1="320" x2="700" y2="320"/>
+        <line x1="0" y1="360" x2="700" y2="360"/>
+        <line x1="0" y1="400" x2="700" y2="400"/>
+        <!-- vertical grout lines -->
+        <line x1="40" y1="0" x2="40" y2="420"/>
+        <line x1="80" y1="0" x2="80" y2="420"/>
+        <line x1="120" y1="0" x2="120" y2="420"/>
+        <line x1="160" y1="0" x2="160" y2="420"/>
+        <line x1="200" y1="0" x2="200" y2="420"/>
+        <line x1="240" y1="0" x2="240" y2="420"/>
+        <line x1="280" y1="0" x2="280" y2="420"/>
+        <line x1="320" y1="0" x2="320" y2="420"/>
+        <line x1="360" y1="0" x2="360" y2="420"/>
+        <line x1="400" y1="0" x2="400" y2="420"/>
+        <line x1="440" y1="0" x2="440" y2="420"/>
+        <line x1="480" y1="0" x2="480" y2="420"/>
+        <line x1="520" y1="0" x2="520" y2="420"/>
+        <line x1="560" y1="0" x2="560" y2="420"/>
+        <line x1="600" y1="0" x2="600" y2="420"/>
+        <line x1="640" y1="0" x2="640" y2="420"/>
+        <line x1="680" y1="0" x2="680" y2="420"/>
+      </g>
+
+      <!-- Vanity / sink counter -->
+      <rect x="100" y="340" width="500" height="80" fill="#0d0d14" stroke="#181820" stroke-width="2"/>
+      <rect x="100" y="338" width="500" height="8" fill="#14141e"/>
+      <!-- sink basin -->
+      <ellipse cx="350" cy="360" rx="80" ry="20" fill="#080810" stroke="#181820" stroke-width="1.5"/>
+      <ellipse cx="350" cy="360" rx="70" ry="16" fill="#060608"/>
+      <!-- faucet -->
+      <rect x="340" y="330" width="20" height="12" rx="3" fill="#1a1a22" stroke="#222" stroke-width="1"/>
+      <rect x="344" y="322" width="12" height="10" rx="2" fill="#161620"/>
+      <!-- faucet head -->
+      <rect x="340" y="318" width="20" height="6" rx="3" fill="#181820"/>
+      <!-- handles -->
+      <rect x="314" y="335" width="24" height="6" rx="3" fill="#1a1a22"/>
+      <rect x="362" y="335" width="24" height="6" rx="3" fill="#1a1a22"/>
+      <!-- drain water ripple (small) -->
+      <ellipse cx="350" cy="370" rx="18" ry="5" fill="none" stroke="rgba(0,150,200,.15)" stroke-width="1"/>
+      <ellipse cx="350" cy="370" rx="10" ry="3" fill="none" stroke="rgba(0,150,200,.1)" stroke-width="1"/>
+
+      <!-- Mirror frame -->
+      <rect x="190" y="30" width="320" height="300" rx="4" fill="#060608" stroke="#1e1e28" stroke-width="6"/>
+      <rect x="193" y="33" width="314" height="294" rx="3" fill="#08080e"/>
+      <!-- mirror chrome edge highlight -->
+      <rect x="190" y="30" width="320" height="4" rx="2" fill="rgba(255,255,255,.06)"/>
+      <rect x="190" y="30" width="4" height="300" rx="2" fill="rgba(255,255,255,.04)"/>
+
+      <!-- Mirror REFLECTION area -->
+      <!-- bathroom wall reflected (slightly desaturated/darker) -->
+      <rect x="194" y="34" width="312" height="290" fill="#06060a"/>
+      <!-- tile reflection (faint) -->
+      <g stroke="rgba(15,15,24,.8)" stroke-width=".5" fill="none">
+        <line x1="194" y1="74" x2="506" y2="74"/>
+        <line x1="194" y1="114" x2="506" y2="114"/>
+        <line x1="194" y1="154" x2="506" y2="154"/>
+        <line x1="194" y1="194" x2="506" y2="194"/>
+        <line x1="194" y1="234" x2="506" y2="234"/>
+        <line x1="194" y1="274" x2="506" y2="274"/>
+        <line x1="234" y1="34" x2="234" y2="324"/>
+        <line x1="274" y1="34" x2="274" y2="324"/>
+        <line x1="314" y1="34" x2="314" y2="324"/>
+        <line x1="354" y1="34" x2="354" y2="324"/>
+        <line x1="394" y1="34" x2="394" y2="324"/>
+        <line x1="434" y1="34" x2="434" y2="324"/>
+        <line x1="474" y1="34" x2="474" y2="324"/>
+      </g>
+
+      <!-- Mirror light glow from above -->
+      <ellipse cx="350" cy="34" rx="120" ry="40" fill="url(#mirrorLight)"/>
+
+      <!-- Overhead mirror light bar -->
+      <rect x="210" y="22" width="280" height="10" rx="3" fill="#141418"/>
+      <rect x="215" y="25" width="270" height="5" rx="2" fill="rgba(220,230,255,.12)" style="animation:mirrorShimmer 3s ease-in-out infinite"/>
+
+      <!-- CHRIS REFLECTION IN MIRROR — face close up -->
+      <!-- shoulders/chest -->
+      <path d="M240,324 Q260,280 350,265 Q440,280 460,324Z" fill="#1e2840" filter="url(#mirrorBlur)"/>
+      <!-- neck -->
+      <rect x="334" y="248" width="32" height="20" rx="4" fill="#c8906a" filter="url(#mirrorBlur)"/>
+      <!-- Head (detailed, looking straight at viewer) -->
+      <circle cx="350" cy="220" r="58" fill="#c8906a" filter="url(#mirrorBlur)"/>
+      <!-- shadow/shading on face -->
+      <ellipse cx="370" cy="220" rx="40" ry="50" fill="rgba(0,0,0,.15)" filter="url(#mirrorBlur)"/>
+      <!-- Hair -->
+      <path d="M292,210 Q294,166 350,158 Q406,166 408,210 Q400,176 350,174 Q300,176 292,210Z" fill="#1a1008" filter="url(#mirrorBlur)"/>
+      <!-- hairline -->
+      <path d="M296,214 Q304,188 322,178 Q338,170 350,168 Q362,170 378,178 Q396,188 404,214" fill="#1a1008" opacity=".7" filter="url(#mirrorBlur)"/>
+      <!-- eyebrows -->
+      <path d="M312,200 Q325,196 338,198" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round" filter="url(#mirrorBlur)"/>
+      <path d="M362,198 Q375,196 388,200" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round" filter="url(#mirrorBlur)"/>
+      <!-- Eyes (shocked, wide) -->
+      <ellipse cx="325" cy="212" rx="13" ry="11" fill="#fff" filter="url(#mirrorBlur)"/>
+      <circle cx="326" cy="213" r="8" fill="#4a3020" filter="url(#mirrorBlur)"/>
+      <circle cx="327" cy="213" r="5" fill="#1a0a00"/>
+      <circle cx="323" cy="209" r="2" fill="#fff" opacity=".7"/>
+      <!-- bloodshot vein left eye -->
+      <line x1="313" y1="208" x2="322" y2="212" stroke="rgba(255,80,80,.4)" stroke-width=".8" filter="url(#mirrorBlur)"/>
+      <line x1="316" y1="215" x2="322" y2="214" stroke="rgba(255,80,80,.3)" stroke-width=".8" filter="url(#mirrorBlur)"/>
+
+      <ellipse cx="375" cy="212" rx="13" ry="11" fill="#fff" filter="url(#mirrorBlur)"/>
+      <circle cx="374" cy="213" r="8" fill="#4a3020" filter="url(#mirrorBlur)"/>
+      <circle cx="374" cy="213" r="5" fill="#1a0a00"/>
+      <circle cx="371" cy="209" r="2" fill="#fff" opacity=".7"/>
+      <!-- bloodshot right eye -->
+      <line x1="382" y1="209" x2="377" y2="212" stroke="rgba(255,80,80,.4)" stroke-width=".8" filter="url(#mirrorBlur)"/>
+
+      <!-- Nose -->
+      <path d="M345,220 Q343,232 340,238 Q348,242 360,238 Q357,232 355,220" fill="rgba(0,0,0,.12)" filter="url(#mirrorBlur)"/>
+      <ellipse cx="344" cy="238" rx="5" ry="3.5" fill="rgba(0,0,0,.15)" filter="url(#mirrorBlur)"/>
+      <ellipse cx="356" cy="238" rx="5" ry="3.5" fill="rgba(0,0,0,.15)" filter="url(#mirrorBlur)"/>
+      <!-- Mouth (open in shock) -->
+      <path d="M330,252 Q350,264 370,252" stroke="#a06848" stroke-width="2" fill="rgba(0,0,0,.4)" filter="url(#mirrorBlur)"/>
+      <!-- lips parted slightly -->
+      <ellipse cx="350" cy="256" rx="16" ry="5" fill="rgba(0,0,0,.3)" filter="url(#mirrorBlur)"/>
+
+      <!-- ══ EAR + STITCH (the KEY visual) ══ -->
+      <!-- Right ear (visible) -->
+      <path d="M408,200 Q422,205 424,220 Q422,235 416,240 Q410,242 406,238 Q414,230 414,220 Q414,208 408,200Z" fill="#c0886a" filter="url(#mirrorBlur)"/>
+      <!-- ear canal -->
+      <ellipse cx="410" cy="220" rx="5" ry="8" fill="#a07050" opacity=".5" filter="url(#mirrorBlur)"/>
+      <!-- inner ear -->
+      <path d="M410,213 Q413,218 412,224 Q410,228 408,226" stroke="#a07050" stroke-width="1.5" fill="none" opacity=".6" filter="url(#mirrorBlur)"/>
+
+      <!-- STITCH — below and behind ear — THIS IS THE CENTERPIECE -->
+      <!-- wound/incision -->
+      <path d="M402,238 Q412,244 422,242 Q428,240 430,236" stroke="#cc1a1a" stroke-width="3" fill="none" stroke-linecap="round" style="animation:stitchPulse 2s ease-in-out infinite"/>
+      <!-- stitch glow -->
+      <ellipse cx="416" cy="240" rx="22" ry="10" fill="url(#stitchBlood)" style="animation:stitchPulse 2s ease-in-out infinite"/>
+      <!-- stitch threads (the actual sutures) -->
+      <g stroke="#ff3355" stroke-width="1.5" stroke-linecap="round" style="animation:stitchPulse 2s ease-in-out infinite">
+        <line x1="404" y1="234" x2="400" y2="242"/>
+        <line x1="400" y1="234" x2="404" y2="242"/>
+        <line x1="410" y1="236" x2="406" y2="244"/>
+        <line x1="406" y1="236" x2="410" y2="244"/>
+        <line x1="416" y1="238" x2="412" y2="246"/>
+        <line x1="412" y1="238" x2="416" y2="246"/>
+        <line x1="422" y1="237" x2="418" y2="245"/>
+        <line x1="418" y1="237" x2="422" y2="245"/>
+        <line x1="428" y1="234" x2="424" y2="242"/>
+        <line x1="424" y1="234" x2="428" y2="242"/>
+      </g>
+      <!-- horizontal stitch line (wound itself) -->
+      <path d="M402,238 Q412,244 422,242 Q428,240 430,236" stroke="rgba(180,0,20,.6)" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+      <!-- hand touching ear (reaching up to feel it) -->
+      <g opacity=".9" filter="url(#mirrorBlur)">
+        <!-- arm coming from below mirror frame -->
+        <path d="M420,324 Q432,295 435,265 Q436,252 432,245" stroke="#c8906a" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <!-- hand -->
+        <ellipse cx="432" cy="243" rx="16" ry="12" fill="#c8906a"/>
+        <!-- fingers -->
+        <path d="M425,234 Q420,226 418,222" stroke="#c8906a" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M432,232 Q430,223 430,219" stroke="#c8906a" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M438,233 Q438,224 440,220" stroke="#c8906a" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M444,236 Q446,228 449,225" stroke="#c8906a" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M420,240 Q412,240 410,244" stroke="#c8906a" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- Mirror shimmer overlay -->
+      <rect x="194" y="34" width="312" height="290" fill="url(#mirrorLight)" style="animation:mirrorShimmer 4s ease-in-out infinite"/>
+      <!-- glass scratches -->
+      <line x1="220" y1="50" x2="240" y2="120" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+      <line x1="460" y1="80" x2="478" y2="160" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
+    </svg>
+
+    <!-- Zoom indicator box (pointing to stitch) -->
+    <div id="s5-zoom" style="position:absolute;top:160px;right:30px;opacity:0;transition:opacity .5s;pointer-events:none;">
+      <svg width="130" height="90" viewBox="0 0 130 90">
+        <!-- zoom box -->
+        <rect x="0" y="0" width="130" height="76" rx="3" fill="rgba(0,0,0,.9)" stroke="#ff2244" stroke-width="1.5"/>
+        <!-- zoomed stitch closeup -->
+        <rect x="4" y="4" width="122" height="68" rx="2" fill="#0a0508"/>
+        <!-- skin texture zoomed -->
+        <ellipse cx="65" cy="38" rx="55" ry="30" fill="#c8906a"/>
+        <ellipse cx="75" cy="38" rx="35" ry="22" fill="#c09060" opacity=".5"/>
+        <!-- incision line zoomed -->
+        <path d="M20,42 Q45,50 70,47 Q95,44 108,38" stroke="#cc1a1a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- stitches zoomed big -->
+        <g stroke="#ff3355" stroke-width="2" stroke-linecap="round">
+          <line x1="28" y1="36" x2="24" y2="48"/><line x1="24" y1="36" x2="28" y2="48"/>
+          <line x1="40" y1="38" x2="36" y2="50"/><line x1="36" y1="38" x2="40" y2="50"/>
+          <line x1="52" y1="40" x2="48" y2="52"/><line x1="48" y1="40" x2="52" y2="52"/>
+          <line x1="64" y1="41" x2="60" y2="53"/><line x1="60" y1="41" x2="64" y2="53"/>
+          <line x1="76" y1="40" x2="72" y2="52"/><line x1="72" y1="40" x2="76" y2="52"/>
+          <line x1="88" y1="38" x2="84" y2="50"/><line x1="84" y1="38" x2="88" y2="50"/>
+          <line x1="100" y1="35" x2="96" y2="47"/><line x1="96" y1="35" x2="100" y2="47"/>
+        </g>
+        <!-- blood hint -->
+        <ellipse cx="52" cy="44" rx="8" ry="4" fill="rgba(200,0,30,.4)"/>
+        <!-- label -->
+        <text x="65" y="86" font-family="Share Tech Mono" font-size="7" fill="#ff2244" text-anchor="middle" letter-spacing="1">SUBDERMAL IMPLANT?</text>
+        <!-- corner connection lines to mirror -->
+        <line x1="0" y1="0" x2="-20" y2="-20" stroke="#ff2244" stroke-width="1" stroke-dasharray="3,2" opacity=".5"/>
+      </svg>
+    </div>
+
+    <!-- Caption -->
+    <div id="s5-cap" class="cap" style="bottom:20px;left:50%;transform:translateX(-50%);min-width:360px;border-left:3px solid #ff2244;text-align:center;opacity:0;transition:opacity .5s;">
+      <div class="cap-speaker" style="color:#ff2244;text-align:center;">— MEMORIES FLOODING BACK —</div>
+      <div class="cap-text" style="text-align:center;">A stitch. Behind his ear. He doesn't remember it being there.</div>
+    </div>
+    <div id="s5-cap2" class="cap" style="bottom:20px;left:50%;transform:translateX(-50%);min-width:360px;border-left:3px solid #ffe033;text-align:center;opacity:0;transition:opacity .5s;">
+      <div class="cap-speaker" style="color:#ffe033;text-align:center;">Chris (internal)</div>
+      <div class="cap-text" style="text-align:center;">"I don't remember this being here. I don't remember ANY of this."</div>
+    </div>
+
+    <div class="scene-tag">05 / THE MIRROR</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 6 — THE BUS
+  ══════════════════════════════ -->
+  <div id="s6" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="busInterior" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0c0a10"/>
+          <stop offset="100%" stop-color="#0a0810"/>
+        </linearGradient>
+        <linearGradient id="busWindow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#050a14"/>
+          <stop offset="100%" stop-color="#030710"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Bus walls -->
+      <rect width="700" height="420" fill="url(#busInterior)"/>
+      <!-- Overhead luggage rack / ceiling -->
+      <rect x="0" y="0" width="700" height="60" fill="#0e0c14"/>
+      <line x1="0" y1="60" x2="700" y2="60" stroke="#18162a" stroke-width="2"/>
+      <!-- Overhead handle rails -->
+      <rect x="0" y="52" width="700" height="6" rx="3" fill="#14122a" stroke="#1e1c2e" stroke-width="1"/>
+      <!-- AC vents -->
+      <rect x="60" y="20" width="40" height="12" rx="3" fill="#0c0a18" stroke="#161428" stroke-width="1"/>
+      <line x1="65" y1="20" x2="65" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <line x1="73" y1="20" x2="73" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <line x1="81" y1="20" x2="81" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <line x1="89" y1="20" x2="89" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <rect x="300" y="20" width="40" height="12" rx="3" fill="#0c0a18" stroke="#161428" stroke-width="1"/>
+      <line x1="305" y1="20" x2="305" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <line x1="313" y1="20" x2="313" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <line x1="321" y1="20" x2="321" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <line x1="329" y1="20" x2="329" y2="32" stroke="#141228" stroke-width="1.5"/>
+      <!-- Reading lights -->
+      <circle cx="90" cy="55" r="4" fill="rgba(255,200,80,.08)"/>
+      <circle cx="350" cy="55" r="4" fill="rgba(255,200,80,.08)"/>
+      <circle cx="610" cy="55" r="4" fill="rgba(255,200,80,.08)"/>
+
+      <!-- Bus aisle floor -->
+      <rect x="0" y="340" width="700" height="80" fill="#08080e"/>
+      <line x1="0" y1="340" x2="700" y2="340" stroke="#12101e" stroke-width="1.5"/>
+      <!-- Aisle line -->
+      <line x1="0" y1="360" x2="700" y2="360" stroke="rgba(255,220,50,.06)" stroke-width="1" stroke-dasharray="30,20"/>
+
+      <!-- Seat backs (row in front) -->
+      <rect x="0" y="90" width="140" height="260" rx="8" fill="#130f20" stroke="#1e1830" stroke-width="2"/>
+      <rect x="8" y="98" width="124" height="20" rx="4" fill="#0e0c1a"/><!-- headrest -->
+      <rect x="8" y="124" width="124" height="220" rx="4" fill="#110e1e"/><!-- back -->
+      <rect x="0" y="90" width="140" height="260" rx="8" fill="none" stroke="#181430" stroke-width="1"/>
+      <!-- seat texture seams -->
+      <line x1="70" y1="98" x2="70" y2="340" stroke="#0e0c1c" stroke-width="2"/>
+      <line x1="8" y1="160" x2="132" y2="160" stroke="#0e0c1c" stroke-width="1"/>
+      <!-- small pocket on seat back -->
+      <rect x="20" y="200" width="50" height="40" rx="3" fill="#0c0a18" stroke="#181428" stroke-width="1"/>
+
+      <!-- Second seat row partially visible left -->
+      <rect x="-30" y="90" width="130" height="260" rx="8" fill="#120e1e" stroke="#1c1628" stroke-width="1" opacity=".6"/>
+
+      <!-- Right side: bus WINDOWS (outside dark/forest flashing by) -->
+      <rect x="160" y="75" width="200" height="130" rx="4" fill="url(#busWindow)" stroke="#1a1630" stroke-width="4"/>
+      <!-- window reflection stripe -->
+      <rect x="163" y="78" width="194" height="5" rx="2" fill="rgba(255,255,255,.04)"/>
+      <!-- forest blur outside -->
+      <rect x="164" y="84" width="192" height="118" fill="#020608"/>
+      <!-- blurred trees passing -->
+      <rect x="165" y="90" width="6" height="110" fill="rgba(10,25,12,.8)"/>
+      <rect x="178" y="84" width="4" height="118" fill="rgba(8,20,10,.7)"/>
+      <rect x="198" y="88" width="8" height="112" fill="rgba(12,28,14,.9)"/>
+      <rect x="220" y="82" width="5" height="118" fill="rgba(9,22,11,.6)"/>
+      <rect x="240" y="90" width="7" height="110" fill="rgba(11,26,13,.8)"/>
+      <rect x="265" y="85" width="5" height="115" fill="rgba(8,20,10,.7)"/>
+      <rect x="285" y="88" width="9" height="112" fill="rgba(12,28,14,.9)"/>
+      <rect x="310" y="84" width="4" height="116" fill="rgba(9,22,11,.6)"/>
+      <rect x="328" y="90" width="6" height="108" fill="rgba(10,24,12,.8)"/>
+      <rect x="345" y="86" width="5" height="113" fill="rgba(11,26,13,.7)"/>
+      <!-- moonlight streak -->
+      <rect x="165" y="84" width="192" height="20" fill="rgba(200,190,140,.03)"/>
+      <!-- window rubber frame -->
+      <rect x="160" y="75" width="200" height="130" rx="4" fill="none" stroke="#16142c" stroke-width="8"/>
+
+      <rect x="420" y="75" width="240" height="130" rx="4" fill="url(#busWindow)" stroke="#1a1630" stroke-width="4"/>
+      <rect x="423" y="78" width="234" height="5" rx="2" fill="rgba(255,255,255,.04)"/>
+      <rect x="424" y="84" width="232" height="118" fill="#020608"/>
+      <!-- more blurred forest right window -->
+      <rect x="426" y="90" width="8" height="110" fill="rgba(10,25,12,.8)"/>
+      <rect x="445" y="84" width="5" height="118" fill="rgba(8,20,10,.7)"/>
+      <rect x="466" y="88" width="9" height="112" fill="rgba(12,28,14,.9)"/>
+      <rect x="490" y="82" width="6" height="118" fill="rgba(9,22,11,.6)"/>
+      <rect x="512" y="90" width="7" height="110" fill="rgba(11,26,13,.8)"/>
+      <rect x="535" y="85" width="5" height="115" fill="rgba(8,20,10,.7)"/>
+      <rect x="558" y="88" width="9" height="112" fill="rgba(12,28,14,.9)"/>
+      <rect x="580" y="84" width="5" height="116" fill="rgba(9,22,11,.6)"/>
+      <rect x="600" y="90" width="7" height="108" fill="rgba(10,24,12,.8)"/>
+      <rect x="622" y="86" width="6" height="113" fill="rgba(11,26,13,.7)"/>
+      <rect x="424" y="84" width="232" height="20" fill="rgba(200,190,140,.03)"/>
+      <rect x="420" y="75" width="240" height="130" rx="4" fill="none" stroke="#16142c" stroke-width="8"/>
+
+      <!-- Seat they're sitting in (this row) -->
+      <rect x="150" y="250" width="550" height="170" rx="6" fill="#100d20" stroke="#1a1730" stroke-width="1"/>
+      <line x1="420" y1="250" x2="420" y2="420" stroke="#0e0c1c" stroke-width="2"/>
+    </svg>
+
+    <!-- Chubs (left seat, big dude asleep) -->
+    <div id="s6-chubs" style="position:absolute;bottom:100px;left:160px;opacity:0;transition:opacity .5s;">
+      <svg width="120" height="200" viewBox="0 0 120 200">
+        <!-- body big and slouched -->
+        <ellipse cx="60" cy="190" rx="55" ry="12" fill="#0c0a18" opacity=".5"/>
+        <!-- legs (sitting) -->
+        <rect x="20" y="150" width="35" height="50" rx="6" fill="#1a1a2c"/>
+        <rect x="65" y="150" width="35" height="50" rx="6" fill="#1a1a2c"/>
+        <!-- Sneakers -->
+        <ellipse cx="37" cy="200" rx="22" ry="7" fill="#e8e8f0"/>
+        <ellipse cx="83" cy="200" rx="22" ry="7" fill="#e8e8f0"/>
+        <!-- Body (big hoodie, yellow) -->
+        <path d="M15,150 Q10,105 20,85 Q35,65 60,60 Q85,65 100,85 Q110,105 105,150Z" fill="#b8901a"/>
+        <!-- hoodie details -->
+        <path d="M45,90 Q60,86 75,90 L75,130 Q60,134 45,130Z" fill="#a07c14" stroke="#906c10" stroke-width="1"/>
+        <!-- hoodie pocket -->
+        <!-- arms (one arm on bag on lap) -->
+        <path d="M15,105 Q5,120 10,145" stroke="#b8901a" stroke-width="18" fill="none" stroke-linecap="round"/>
+        <path d="M105,105 Q115,120 110,145" stroke="#b8901a" stroke-width="18" fill="none" stroke-linecap="round"/>
+        <ellipse cx="10" cy="147" rx="14" ry="10" fill="#c8a06a"/>
+        <ellipse cx="110" cy="147" rx="14" ry="10" fill="#c8a06a"/>
+        <!-- Bag on lap -->
+        <rect x="30" y="155" width="60" height="40" rx="6" fill="#1a2a3a" stroke="#1e2e3e" stroke-width="1.5"/>
+        <rect x="38" y="160" width="44" height="10" rx="3" fill="#152030"/>
+        <rect x="38" y="175" width="44" height="3" rx="1" fill="#152030"/>
+        <!-- zipper -->
+        <line x1="30" y1="165" x2="90" y2="165" stroke="#222" stroke-width="1"/>
+        <!-- Neck -->
+        <rect x="48" y="56" width="24" height="12" rx="4" fill="#c8a06a"/>
+        <!-- Head (big, round, eyes closed sleeping) -->
+        <circle cx="60" cy="40" r="28" fill="#c8a06a"/>
+        <!-- hair (short) -->
+        <path d="M32,32 Q34,12 60,10 Q86,12 88,32 Q80,20 60,20 Q40,20 32,32Z" fill="#1a0e08"/>
+        <!-- Eyes CLOSED (sleeping) -->
+        <path d="M44,38 Q52,36 56,38" stroke="#1a0e08" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M64,38 Q68,36 76,38" stroke="#1a0e08" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- mouth open slightly snoring -->
+        <ellipse cx="60" cy="52" rx="6" ry="4" fill="rgba(0,0,0,.4)"/>
+        <!-- sleep Z's -->
+        <text x="90" y="25" font-family="Share Tech Mono" font-size="14" fill="rgba(255,255,255,.2)" style="animation:starTwinkle 2s ease-in-out infinite">z</text>
+        <text x="102" y="14" font-family="Share Tech Mono" font-size="10" fill="rgba(255,255,255,.15)" style="animation:starTwinkle 2s ease-in-out infinite .5s">z</text>
+      </svg>
+    </div>
+
+    <!-- Chris (right seat, staring out window, awake) -->
+    <div id="s6-chris" style="position:absolute;bottom:100px;right:60px;opacity:0;transition:opacity .5s;">
+      <svg width="100" height="190" viewBox="0 0 100 190">
+        <ellipse cx="50" cy="185" rx="45" ry="10" fill="#0c0a18" opacity=".5"/>
+        <!-- legs sitting -->
+        <rect x="15" y="145" width="28" height="45" rx="5" fill="#1a1a2c"/>
+        <rect x="57" y="145" width="28" height="45" rx="5" fill="#1a1a2c"/>
+        <ellipse cx="29" cy="190" rx="20" ry="6" fill="#e8e8e8"/>
+        <ellipse cx="71" cy="190" rx="20" ry="6" fill="#e8e8e8"/>
+        <!-- Body hoodie dark blue -->
+        <path d="M12,145 Q8,105 18,86 Q30,68 50,64 Q70,68 82,86 Q92,105 88,145Z" fill="#1e2840"/>
+        <!-- hoodie pocket -->
+        <path d="M32,95 Q50,90 68,95 L68,128 Q50,132 32,128Z" fill="#182035" stroke="#1a2238" stroke-width="1"/>
+        <!-- arms (one arm on armrest leaning toward window) -->
+        <path d="M12,100 Q4,110 6,130" stroke="#1e2840" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <path d="M88,100 Q96,115 92,138" stroke="#1e2840" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <ellipse cx="8" cy="132" rx="13" ry="9" fill="#c8906a"/>
+        <ellipse cx="90" cy="140" rx="13" ry="9" fill="#c8906a"/>
+        <!-- Neck -->
+        <rect x="40" y="58" width="20" height="10" rx="3" fill="#c8906a"/>
+        <!-- Head (facing slightly left toward window, profile-ish) -->
+        <circle cx="50" cy="42" r="24" fill="#c8906a"/>
+        <!-- Hair -->
+        <path d="M26,36 Q28,16 50,14 Q72,16 74,36 Q67,24 50,22 Q33,24 26,36Z" fill="#1a1008"/>
+        <!-- eye looking left (toward window) -->
+        <ellipse cx="40" cy="40" rx="5" ry="4" fill="#fff"/>
+        <circle cx="38" cy="40" r="3.5" fill="#4a3020"/>
+        <circle cx="37" cy="39" r="1.5" fill="#000"/>
+        <circle cx="36" cy="38" r=".7" fill="#fff" opacity=".8"/>
+        <!-- eyebrow raised worried -->
+        <path d="M34,33 Q40,30 46,33" stroke="#1a1008" stroke-width="1.8" fill="none"/>
+        <!-- other eye (far side, less detail) -->
+        <ellipse cx="60" cy="40" rx="4" ry="3.5" fill="#fff" opacity=".6"/>
+        <circle cx="58" cy="40" r="3" fill="#4a3020" opacity=".8"/>
+        <!-- mouth slight frown, thinking -->
+        <path d="M40,52 Q50,50 58,52" stroke="#a06848" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- AirPods floating out of bag (revelation) -->
+    <div id="s6-airpods" style="position:absolute;bottom:210px;left:230px;opacity:0;transition:opacity .6s;">
+      <svg width="120" height="80" viewBox="0 0 120 80">
+        <!-- glow effect -->
+        <ellipse cx="60" cy="40" rx="50" ry="30" fill="rgba(255,220,50,.08)"/>
+        <!-- AirPod left -->
+        <rect x="20" y="20" width="16" height="26" rx="5" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/>
+        <rect x="24" y="46" width="8" height="12" rx="2" fill="#e8e8e8"/>
+        <!-- AirPod right -->
+        <rect x="84" y="20" width="16" height="26" rx="5" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/>
+        <rect x="88" y="46" width="8" height="12" rx="2" fill="#e8e8e8"/>
+        <!-- question marks / confusion -->
+        <text x="52" y="30" font-family="Share Tech Mono" font-size="16" fill="rgba(255,220,50,.8)" text-anchor="middle">?!</text>
+        <!-- label -->
+        <text x="60" y="72" font-family="Share Tech Mono" font-size="7" fill="rgba(255,80,80,.8)" text-anchor="middle" letter-spacing="1">HOW ARE THESE IN CHUBS' BAG?</text>
+      </svg>
+    </div>
+
+    <div id="s6-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ffe033;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ffe033;">Chubs</div>
+      <div class="cap-text">"Man you say that every day. If I got paid for every time you said that, I'd be a millionaire."</div>
+    </div>
+    <div id="s6-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #00eeff;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#00eeff;">Chris</div>
+      <div class="cap-text">"I swear I just had them in my pocket… How are they in YOUR bag?"</div>
+    </div>
+    <div id="s6-cap3" class="cap" style="bottom:20px;left:20px;border-left:3px solid #aaa;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#aaa;">Chris (internal)</div>
+      <div class="cap-text">I've been seeing weird stuff since I woke up. The glitch. The reset. That thing in the woods. And now…</div>
+    </div>
+
+    <div class="scene-tag">06 / THE BUS</div>
+    <div id="s6-loop" class="loop-hud" style="color:#ff4444;opacity:0;transition:opacity .4s;">LOOP 1</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 7 — CAMP / WOODS
+  ══════════════════════════════ -->
+  <div id="s7" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="campSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#010403"/>
+          <stop offset="50%" stop-color="#020706"/>
+          <stop offset="100%" stop-color="#040e07"/>
+        </linearGradient>
+        <linearGradient id="campGround" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#050c05"/>
+          <stop offset="100%" stop-color="#030803"/>
+        </linearGradient>
+        <radialGradient id="campFire" cx="50%" cy="80%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,140,20,.5)"/>
+          <stop offset="100%" stop-color="rgba(255,80,20,0)"/>
+        </radialGradient>
+        <radialGradient id="panelGlowGreen" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,255,100,.5)"/>
+          <stop offset="100%" stop-color="rgba(0,255,100,0)"/>
+        </radialGradient>
+        <filter id="campBlur">
+          <feGaussianBlur stdDeviation="2"/>
+        </filter>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="700" height="420" fill="url(#campSky)"/>
+      <!-- Stars -->
+      <circle cx="50" cy="20" r="1" fill="#fff" opacity=".5" style="animation:starTwinkle 2s ease-in-out infinite"/>
+      <circle cx="150" cy="35" r=".8" fill="#fff" opacity=".4" style="animation:starTwinkle 3s ease-in-out infinite .4s"/>
+      <circle cx="280" cy="18" r="1.2" fill="#fff" opacity=".5" style="animation:starTwinkle 2.5s ease-in-out infinite .8s"/>
+      <circle cx="450" cy="28" r=".8" fill="#fff" opacity=".4" style="animation:starTwinkle 1.9s ease-in-out infinite 1.2s"/>
+      <circle cx="580" cy="14" r="1" fill="#fff" opacity=".5" style="animation:starTwinkle 2.8s ease-in-out infinite .2s"/>
+      <circle cx="650" cy="40" r=".7" fill="#fff" opacity=".3" style="animation:starTwinkle 2.3s ease-in-out infinite .6s"/>
+
+      <!-- Cabin in background -->
+      <rect x="60" y="160" width="180" height="140" fill="#0c0a0e" stroke="#181218" stroke-width="2"/>
+      <!-- roof -->
+      <polygon points="50,162 150,100 260,162" fill="#0a0808" stroke="#141010" stroke-width="2"/>
+      <!-- cabin window (lit) -->
+      <rect x="90" y="200" width="50" height="40" fill="#100c04" stroke="#181210" stroke-width="2"/>
+      <!-- warm light in window -->
+      <rect x="93" y="203" width="44" height="34" fill="#1a1408" opacity=".8"/>
+      <ellipse cx="115" cy="220" rx="22" ry="17" fill="rgba(255,180,40,.1)"/>
+      <!-- cabin door -->
+      <rect x="160" y="250" width="36" height="50" rx="2" fill="#0c0a0e" stroke="#181218" stroke-width="1.5"/>
+      <circle cx="190" cy="276" r="3" fill="#222"/>
+
+      <!-- Deep trees (BG) -->
+      <g opacity=".6" filter="url(#campBlur)">
+        <rect x="320" y="180" width="12" height="150" fill="#070d07"/>
+        <polygon points="326,175 300,235 352,235" fill="#081808"/>
+        <polygon points="326,205 304,255 348,255" fill="#0a1a0a"/>
+        <rect x="430" y="170" width="10" height="160" fill="#060c06"/>
+        <polygon points="435,165 408,228 462,228" fill="#081608"/>
+        <polygon points="435,195 412,248 458,248" fill="#0a1808"/>
+        <rect x="530" y="185" width="12" height="145" fill="#070d07"/>
+        <polygon points="536,180 510,242 562,242" fill="#081808"/>
+        <polygon points="536,210 514,260 558,260" fill="#0a1a0a"/>
+      </g>
+
+      <!-- Foreground trees -->
+      <g>
+        <rect x="-5" y="225" width="14" height="195" fill="#08050a"/>
+        <polygon points="2,218 -24,290 28,290" fill="#0c1e0e"/>
+        <polygon points="2,248 -20,304 24,304" fill="#0e2210"/>
+        <rect x="680" y="218" width="14" height="202" fill="#08050a"/>
+        <polygon points="687,210 658,284 716,284" fill="#0c1e0e"/>
+        <polygon points="687,240 662,300 712,300" fill="#0e2210"/>
+      </g>
+
+      <!-- Ground -->
+      <rect x="0" y="300" width="700" height="120" fill="url(#campGround)"/>
+      <line x1="0" y1="300" x2="700" y2="300" stroke="#0a160a" stroke-width="2"/>
+      <!-- Gravel path texture -->
+      <ellipse cx="350" cy="340" rx="200" ry="30" fill="rgba(20,15,8,.5)"/>
+      <ellipse cx="350" cy="355" rx="160" ry="20" fill="rgba(18,12,6,.4)"/>
+
+      <!-- Fog -->
+      <rect x="0" y="275" width="700" height="130" fill="rgba(4,10,4,.4)"/>
+
+      <!-- ZONE 47 Camp Panel (green light this time — different from forest one) -->
+      <g id="campPanel" style="animation:panelGreen 2s ease-in-out infinite">
+        <ellipse cx="540" cy="310" rx="45" ry="12" fill="#060e06" opacity=".9"/>
+        <!-- panel body -->
+        <rect x="510" y="288" width="62" height="22" rx="3" fill="#0a160a" stroke="#162616" stroke-width="1.5"/>
+        <rect x="513" y="290" width="56" height="18" rx="2" fill="#07100a"/>
+        <!-- vines -->
+        <path d="M507,292 Q516,284 526,294 Q532,286 540,296" stroke="#0c1a0a" stroke-width="3" fill="none" opacity=".8"/>
+        <!-- STATUS LIGHT GREEN this time -->
+        <ellipse cx="541" cy="299" rx="36" ry="20" fill="url(#panelGlowGreen)" opacity=".5"/>
+        <circle cx="541" cy="299" r="5" fill="#00ff77"/>
+        <circle cx="541" cy="299" r="3" fill="#66ffaa"/>
+        <!-- label -->
+        <text x="541" y="286" font-family="Share Tech Mono" font-size="7" fill="rgba(0,255,100,.8)" text-anchor="middle" letter-spacing="2">ZONE 47</text>
+        <!-- bolt screws -->
+        <circle cx="518" cy="293" r="2" fill="#162616" stroke="#1a2a1a" stroke-width=".5"/>
+        <circle cx="564" cy="293" r="2" fill="#162616" stroke="#1a2a1a" stroke-width=".5"/>
+        <circle cx="518" cy="305" r="2" fill="#162616" stroke="#1a2a1a" stroke-width=".5"/>
+        <circle cx="564" cy="305" r="2" fill="#162616" stroke="#1a2a1a" stroke-width=".5"/>
+      </g>
+    </svg>
+
+    <!-- Camp Creature (slides in from left) -->
+    <div id="s7-creature" style="position:absolute;bottom:100px;left:-200px;transition:left 1.8s cubic-bezier(.2,.8,.4,1);opacity:0;">
+      <svg width="200" height="110" viewBox="0 0 200 110" style="animation:creatureGlitch 2.5s ease-in-out infinite">
+        <ellipse cx="100" cy="108" rx="72" ry="7" fill="rgba(0,0,0,.4)"/>
+        <!-- tail -->
+        <path d="M170,62 Q188,70 194,52 Q197,38 184,44" stroke="#0e0a0f" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <path d="M170,62 Q188,70 194,52 Q197,38 184,44" stroke="#130d14" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- body -->
+        <ellipse cx="100" cy="65" rx="68" ry="26" fill="#0d0a0e"/>
+        <ellipse cx="99" cy="63" rx="66" ry="24" fill="#110d12"/>
+        <!-- spine ridges -->
+        <path d="M55,46 Q84,40 110,44 Q140,40 162,46" stroke="#0a080b" stroke-width="3" fill="none"/>
+        <!-- head -->
+        <path d="M22,56 Q6,44 4,58 Q3,72 12,76 Q22,80 36,72 Q38,64 36,58Z" fill="#0d0a0e"/>
+        <path d="M24,58 Q10,47 8,60 Q7,72 16,75 Q25,78 36,71 Q37,63 36,59Z" fill="#130d14"/>
+        <!-- jaw -->
+        <path d="M26,66 Q16,74 10,70 Q6,74 9,79 Q18,84 32,76Z" fill="#0a0808"/>
+        <!-- teeth -->
+        <path d="M22,70 L21,78 M18,72 L16,80 M14,72 L12,80" stroke="#1a1218" stroke-width="2" stroke-linecap="round"/>
+        <!-- HORNS -->
+        <path d="M30,48 Q28,28 24,18" stroke="#0a0808" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M30,48 Q28,28 24,18" stroke="#130f12" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M18,46 Q14,26 12,16" stroke="#0a0808" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M18,46 Q14,26 12,16" stroke="#130f12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="24" cy="17" r="3" fill="#1a1215"/>
+        <circle cx="12" cy="15" r="2.5" fill="#1a1215"/>
+        <!-- Eyes -->
+        <circle cx="18" cy="58" r="7" fill="#200010" style="animation:eyeGlow 1.5s ease-in-out infinite"/>
+        <circle cx="18" cy="58" r="5" fill="#ff2244"/>
+        <circle cx="18" cy="58" r="2.5" fill="#ff0033"/>
+        <circle cx="6" cy="58" r="6" fill="#200010" style="animation:eyeGlow 1.5s ease-in-out infinite .3s"/>
+        <circle cx="6" cy="58" r="4" fill="#ff2244"/>
+        <circle cx="6" cy="58" r="2" fill="#ff0033"/>
+        <!-- LEGS -->
+        <path d="M48,78 Q44,95 46,108" stroke="#0d0a0e" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <path d="M46,108 Q40,112 36,108 Q34,105 40,103" stroke="#0d0a0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M68,80 Q64,97 66,109" stroke="#0d0a0e" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M66,109 Q60,113 57,109 Q55,106 61,104" stroke="#0d0a0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M128,78 Q124,95 126,108" stroke="#0d0a0e" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <path d="M126,108 Q120,112 116,108 Q114,105 120,103" stroke="#0d0a0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M148,76 Q144,93 146,106" stroke="#0d0a0e" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M146,106 Q140,110 137,106 Q135,103 141,101" stroke="#0d0a0e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- glitch doubles -->
+        <ellipse cx="104" cy="65" rx="66" ry="24" fill="none" stroke="rgba(255,0,60,.12)" stroke-width="2" transform="translate(5,0)"/>
+        <ellipse cx="96" cy="65" rx="66" ry="24" fill="none" stroke="rgba(0,255,240,.08)" stroke-width="2" transform="translate(-5,0)"/>
+      </svg>
+    </div>
+
+    <!-- Hidden panel overlay (fades in) -->
+    <div id="s7-panel" style="position:absolute;bottom:60px;right:40px;opacity:0;transition:opacity .8s;">
+      <svg width="180" height="120" viewBox="0 0 180 120">
+        <!-- ground glow -->
+        <ellipse cx="90" cy="110" rx="80" ry="18" fill="rgba(0,255,100,.1)"/>
+        <!-- engraved text reveal -->
+        <text x="90" y="55" font-family="Share Tech Mono" font-size="12" fill="rgba(0,255,100,.9)" text-anchor="middle" letter-spacing="3">ZONE 47</text>
+        <text x="90" y="72" font-family="Share Tech Mono" font-size="8" fill="rgba(0,255,100,.5)" text-anchor="middle" letter-spacing="2">SECTOR 2 / CAMP NODE</text>
+        <line x1="10" y1="80" x2="170" y2="80" stroke="rgba(0,255,100,.3)" stroke-width="1" stroke-dasharray="5,3"/>
+        <text x="90" y="95" font-family="Share Tech Mono" font-size="7" fill="rgba(255,80,80,.8)" text-anchor="middle">— IT'S NOT RANDOM. IT'S PLACED. —</text>
+      </svg>
+    </div>
+
+    <div id="s7-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #88cc44;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#88cc44;">Chris</div>
+      <div class="cap-text">"Let's dip. Into the woods. I need to check something."</div>
+    </div>
+    <div id="s7-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ff2244;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ff2244;">???</div>
+      <div class="cap-text">It doesn't walk. It GLITCHES forward — like a corrupted file skipping frames.</div>
+    </div>
+    <div id="s7-cap3" class="cap" style="bottom:20px;left:20px;border-left:3px solid #00ff77;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#00ff77;">Chris</div>
+      <div class="cap-text">"Same exact thing. Another state. Same size. Same glow. It's placed here — ZONE 47."</div>
+    </div>
+
+    <div class="scene-tag">07 / CAMP</div>
+    <div id="s7-loop" class="loop-hud" style="color:#ff7700;opacity:0;transition:opacity .4s;">LOOP 2</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 8 — MODIFICATION ROOM
+  ══════════════════════════════ -->
+  <div id="s8" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="modWall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0e0e0e"/>
+          <stop offset="100%" stop-color="#0a0a0a"/>
+        </linearGradient>
+        <radialGradient id="modGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,255,100,.3)"/>
+          <stop offset="100%" stop-color="rgba(0,255,100,0)"/>
+        </radialGradient>
+        <radialGradient id="xGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,30,50,.4)"/>
+          <stop offset="100%" stop-color="rgba(255,30,50,0)"/>
+        </radialGradient>
+        <linearGradient id="modFluid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(0,255,100,.04)"/>
+          <stop offset="50%" stop-color="rgba(0,255,100,.18)"/>
+          <stop offset="100%" stop-color="rgba(0,255,100,.3)"/>
+        </linearGradient>
+        <filter id="modGlowF">
+          <feGaussianBlur stdDeviation="5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Room -->
+      <rect width="700" height="420" fill="url(#modWall)"/>
+      <!-- Ceiling -->
+      <rect width="700" height="60" fill="#0f0f0f"/>
+      <line x1="0" y1="60" x2="700" y2="60" stroke="#1a1a1a" stroke-width="2"/>
+      <!-- Ceiling lights (green-tinted here) -->
+      <rect x="100" y="52" width="80" height="6" rx="3" fill="rgba(0,180,80,.07)"/>
+      <rect x="300" y="52" width="80" height="6" rx="3" fill="rgba(0,180,80,.07)" style="animation:labFlicker 6s ease-in-out infinite 1s"/>
+      <rect x="500" y="52" width="80" height="6" rx="3" fill="rgba(0,180,80,.07)"/>
+      <path d="M140,58 L100,310 L180,310Z" fill="rgba(0,180,80,.01)"/>
+      <path d="M340,58 L300,310 L380,310Z" fill="rgba(0,180,80,.012)"/>
+      <path d="M540,58 L500,310 L580,310Z" fill="rgba(0,180,80,.01)"/>
+
+      <!-- Floor -->
+      <rect x="0" y="310" width="700" height="110" fill="#0a0a0a"/>
+      <line x1="0" y1="310" x2="700" y2="310" stroke="#181818" stroke-width="1.5"/>
+      <line x1="0" y1="360" x2="700" y2="360" stroke="#111" stroke-width="1"/>
+      <line x1="100" y1="310" x2="100" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="233" y1="310" x2="233" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="366" y1="310" x2="366" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="500" y1="310" x2="500" y2="420" stroke="#111" stroke-width="1"/>
+      <line x1="633" y1="310" x2="633" y2="420" stroke="#111" stroke-width="1"/>
+
+      <!-- ═══ MODIFICATION MACHINE (centerpiece) ═══ -->
+      <!-- Main housing -->
+      <rect x="200" y="80" width="300" height="210" rx="6" fill="#0c140c" stroke="#162616" stroke-width="2"/>
+      <rect x="206" y="86" width="288" height="198" rx="4" fill="#080e08"/>
+      <!-- machine top header -->
+      <rect x="200" y="80" width="300" height="28" rx="6" fill="#0f1e0f" stroke="#162616" stroke-width="1"/>
+      <text x="350" y="98" font-family="Share Tech Mono" font-size="9" fill="rgba(0,255,100,.7)" text-anchor="middle" letter-spacing="3">MODIFICATION UNIT — Z47</text>
+
+      <!-- Green glowy substance at center -->
+      <ellipse cx="350" cy="190" rx="70" ry="70" fill="url(#modGlow)" opacity=".8"/>
+      <ellipse cx="350" cy="190" rx="40" ry="40" fill="rgba(0,255,100,.15)"/>
+      <circle cx="350" cy="190" r="22" fill="rgba(0,255,100,.25)" style="animation:eyeGlow 2s ease-in-out infinite"/>
+      <circle cx="350" cy="190" r="12" fill="rgba(0,255,100,.4)"/>
+      <circle cx="350" cy="190" r="5" fill="rgba(0,255,100,.8)"/>
+
+      <!-- Tubes left and right of the machine -->
+      <!-- LEFT TUBE — "original" -->
+      <rect x="126" y="88" width="52" height="220" rx="5" fill="#0a140a" stroke="#162616" stroke-width="1.5"/>
+      <rect x="132" y="92" width="40" height="212" rx="3" fill="rgba(0,0,0,.6)"/>
+      <rect x="134" y="94" width="36" height="208" rx="2" fill="url(#modFluid)"/>
+      <ellipse cx="152" cy="200" rx="40" ry="110" fill="url(#modGlow)" opacity=".4"/>
+      <!-- bubbles -->
+      <circle cx="140" cy="260" r="2.5" fill="rgba(0,255,100,.3)" style="animation:tubeRise 3.2s linear infinite"/>
+      <circle cx="156" cy="240" r="2" fill="rgba(0,255,100,.25)" style="animation:tubeRise 4.1s linear infinite .6s"/>
+      <circle cx="164" cy="280" r="1.5" fill="rgba(0,255,100,.2)" style="animation:tubeRise 2.9s linear infinite 1.4s"/>
+      <!-- Chris clone in left tube — ORIGINAL (still, serene) -->
+      <g opacity=".55" filter="url(#modGlowF)">
+        <circle cx="152" cy="160" r="12" fill="#c8906a"/>
+        <ellipse cx="152" cy="153" rx="13" ry="8" fill="#1a1008"/>
+        <line x1="146" y1="162" x2="151" y2="162" stroke="#4a3020" stroke-width="1.5" opacity=".7"/>
+        <line x1="153" y1="162" x2="158" y2="162" stroke="#4a3020" stroke-width="1.5" opacity=".7"/>
+        <path d="M142,175 Q152,220 148,255 Q152,258 156,255 Q152,220 162,175Z" fill="#ddd" opacity=".12"/>
+      </g>
+      <text x="152" y="316" font-family="Share Tech Mono" font-size="6.5" fill="rgba(0,255,100,.5)" text-anchor="middle" letter-spacing="1">ORIGINAL</text>
+
+      <!-- RIGHT TUBE — "modified" -->
+      <rect x="522" y="88" width="52" height="220" rx="5" fill="#0a140a" stroke="#162616" stroke-width="1.5"/>
+      <rect x="528" y="92" width="40" height="212" rx="3" fill="rgba(0,0,0,.6)"/>
+      <rect x="530" y="94" width="36" height="208" rx="2" fill="url(#modFluid)"/>
+      <ellipse cx="548" cy="200" rx="40" ry="110" fill="url(#modGlow)" opacity=".4"/>
+      <circle cx="536" cy="270" r="2.5" fill="rgba(0,255,100,.3)" style="animation:tubeRise 3.8s linear infinite .3s"/>
+      <circle cx="550" cy="250" r="2" fill="rgba(0,255,100,.25)" style="animation:tubeRise 4.5s linear infinite 1.1s"/>
+      <circle cx="560" cy="280" r="1.5" fill="rgba(0,255,100,.2)" style="animation:tubeRise 3.1s linear infinite 1.9s"/>
+      <!-- Chris clone right tube — MODIFIED (floating, something off about it) -->
+      <g opacity=".55" filter="url(#modGlowF)">
+        <circle cx="548" cy="155" r="12" fill="#c8906a"/>
+        <ellipse cx="548" cy="148" rx="13" ry="8" fill="#1a1008"/>
+        <!-- eyes slightly open, eerie -->
+        <ellipse cx="543" cy="157" rx="3" ry="2" fill="#fff" opacity=".5"/>
+        <circle cx="543" cy="157" r="1.5" fill="#ff2244" opacity=".8"/>
+        <ellipse cx="553" cy="157" rx="3" ry="2" fill="#fff" opacity=".5"/>
+        <circle cx="553" cy="157" r="1.5" fill="#ff2244" opacity=".8"/>
+        <path d="M538,168 Q548,218 544,252 Q548,255 552,252 Q548,218 558,168Z" fill="#ddd" opacity=".12"/>
+      </g>
+      <text x="548" y="316" font-family="Share Tech Mono" font-size="6.5" fill="rgba(0,255,100,.5)" text-anchor="middle" letter-spacing="1">MODIFIED</text>
+
+      <!-- Ability panel / buttons on machine face -->
+      <rect x="230" y="108" width="240" height="158" rx="3" fill="#060c06" stroke="#0e1a0e" stroke-width="1"/>
+      <!-- TABS/BUTTONS -->
+      <!-- super speed button -->
+      <rect x="242" y="120" width="100" height="28" rx="3" fill="#0a1e0a" stroke="#163016" stroke-width="1"/>
+      <text x="292" y="137" font-family="Share Tech Mono" font-size="8" fill="rgba(0,255,100,.7)" text-anchor="middle">⚡ SUPER SPEED</text>
+      <circle cx="334" cy="134" r="4" fill="#0a1e0a" stroke="#00ff44" stroke-width="1"/>
+      <!-- super stretch -->
+      <rect x="242" y="156" width="100" height="28" rx="3" fill="#0a1e0a" stroke="#163016" stroke-width="1"/>
+      <text x="292" y="173" font-family="Share Tech Mono" font-size="8" fill="rgba(0,255,100,.7)" text-anchor="middle">⟺ SUPER STRETCH</text>
+      <circle cx="334" cy="170" r="4" fill="#0a1e0a" stroke="#00ff44" stroke-width="1"/>
+      <!-- telekinesis -->
+      <rect x="242" y="192" width="100" height="28" rx="3" fill="#0a1e0a" stroke="#163016" stroke-width="1"/>
+      <text x="292" y="209" font-family="Share Tech Mono" font-size="8" fill="rgba(0,255,100,.7)" text-anchor="middle">◎ TELEKINESIS</text>
+      <circle cx="334" cy="206" r="4" fill="#0a1e0a" stroke="#00ff44" stroke-width="1"/>
+
+      <!-- SKELITH button — the big red one -->
+      <rect x="358" y="120" width="100" height="100" rx="4" fill="#1a0808" stroke="#3a1010" stroke-width="2"/>
+      <ellipse cx="408" cy="170" rx="48" ry="48" fill="url(#xGlow)" opacity=".5"/>
+      <text x="408" y="142" font-family="Share Tech Mono" font-size="7" fill="rgba(255,50,50,.9)" text-anchor="middle" letter-spacing="2">✕ SKELITH ✕</text>
+      <!-- creature silhouette on the button -->
+      <ellipse cx="408" cy="162" rx="20" ry="8" fill="#280808"/>
+      <path d="M400,154 Q388,142 384,136" stroke="#280808" stroke-width="4" fill="none"/>
+      <path d="M408,153 Q408,140 412,136" stroke="#280808" stroke-width="3.5" fill="none"/>
+      <circle cx="384" cy="136" r="2" fill="#400808"/>
+      <circle cx="412" cy="136" r="2" fill="#400808"/>
+      <circle cx="395" cy="157" r="3" fill="#ff0000" style="animation:eyeGlow 1.2s ease-in-out infinite"/>
+      <circle cx="405" cy="157" r="3" fill="#ff0000" style="animation:eyeGlow 1.2s ease-in-out infinite .3s"/>
+      <!-- legs on creature icon -->
+      <line x1="390" y1="170" x2="388" y2="180" stroke="#280808" stroke-width="3"/>
+      <line x1="400" y1="170" x2="398" y2="180" stroke="#280808" stroke-width="3"/>
+      <line x1="418" y1="170" x2="420" y2="180" stroke="#280808" stroke-width="3"/>
+      <line x1="426" y1="170" x2="428" y2="180" stroke="#280808" stroke-width="3"/>
+      <!-- WARNING frame -->
+      <rect x="358" y="120" width="100" height="100" rx="4" fill="none" stroke="#ff2244" stroke-width="1.5" opacity=".6" style="animation:stitchPulse 1.5s ease-in-out infinite"/>
+      <text x="408" y="230" font-family="Share Tech Mono" font-size="6" fill="rgba(255,50,50,.6)" text-anchor="middle">⚠ ARMY DEPLOYMENT</text>
+
+      <!-- MODIFICATION label -->
+      <text x="350" y="106" font-family="Share Tech Mono" font-size="7" fill="rgba(0,255,100,.4)" text-anchor="middle" letter-spacing="3">MODIFICATION</text>
+    </svg>
+
+    <!-- Stretcher rolling in (Chris's clone) -->
+    <div id="s8-stretcher" style="position:absolute;bottom:98px;left:380px;opacity:0;transition:opacity .8s;">
+      <svg width="200" height="130" viewBox="0 0 200 130">
+        <!-- stretcher frame -->
+        <rect x="10" y="60" width="180" height="50" rx="4" fill="#1a1a1a" stroke="#222" stroke-width="2"/>
+        <rect x="10" y="60" width="180" height="8" rx="4" fill="#242424"/>
+        <!-- legs/wheels -->
+        <rect x="20" y="108" width="8" height="22" fill="#141414"/>
+        <rect x="172" y="108" width="8" height="22" fill="#141414"/>
+        <circle cx="24" cy="130" r="6" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+        <circle cx="176" cy="130" r="6" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+        <!-- pillow -->
+        <rect x="14" y="62" width="44" height="20" rx="4" fill="#1e1e1e"/>
+        <!-- CHRIS ON STRETCHER (hospital gown, eyes closed, buzzcut) -->
+        <!-- body under sheet -->
+        <rect x="55" y="64" width="130" height="42" rx="3" fill="#e8e8e8" opacity=".15"/>
+        <!-- feet outline -->
+        <ellipse cx="180" cy="86" rx="14" ry="8" fill="#c8906a" opacity=".6"/>
+        <!-- arms tucked -->
+        <path d="M120,68 Q130,72 140,68" stroke="#c8906a" stroke-width="6" fill="none" stroke-linecap="round" opacity=".5"/>
+        <!-- head -->
+        <circle cx="34" cy="72" r="14" fill="#c8906a"/>
+        <!-- buzzcut -->
+        <path d="M20,68 Q22,56 34,54 Q46,56 48,68 Q44,62 34,62 Q24,62 20,68Z" fill="#1a1008"/>
+        <!-- eyes closed - unconscious -->
+        <path d="M26,70 Q30,68 34,70" stroke="#1a1008" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M34,70 Q38,68 42,70" stroke="#1a1008" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- hospital gown -->
+        <path d="M20,86 Q22,96 20,108" stroke="#ccc" stroke-width="2" fill="none" opacity=".2"/>
+        <!-- IV line -->
+        <path d="M48,72 Q60,65 75,68" stroke="rgba(0,200,80,.4)" stroke-width="1.5" fill="none"/>
+        <!-- label on wrist -->
+        <rect x="14" y="82" width="18" height="8" rx="1" fill="#fff" opacity=".3"/>
+        <!-- big text: THAT'S ME marker -->
+        <text x="100" y="52" font-family="Share Tech Mono" font-size="8" fill="rgba(255,80,80,.8)" text-anchor="middle">▼ PROJECT SANCHEZ</text>
+      </svg>
+    </div>
+
+    <div id="s8-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #00ff77;max-width:440px;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#00ff77;">Scientist (overheard)</div>
+      <div class="cap-text">"⚡ SUPER SPEED" … "◎ TELEKINESIS" … and in bold red: "✕ SKELITH ✕" — with a picture of that creature and the word ARMY."</div>
+    </div>
+    <div id="s8-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ff2244;max-width:440px;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ff2244;">Chris (internal)</div>
+      <div class="cap-text">He looks more and more familiar as it gets closer. It's him. It's him with a buzzcut and a hospital gown.</div>
+    </div>
+    <div id="s8-cap3" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ffe033;max-width:440px;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ffe033;">Chris</div>
+      <div class="cap-text">"Was this guy planning on taking over the world with these creatures?! WHAT IS HAPPENING."</div>
+    </div>
+
+    <div class="scene-tag">08 / MODIFICATION ROOM</div>
+    <div id="s8-loop" class="loop-hud" style="color:#ffaa00;opacity:0;transition:opacity .4s;">LOOP 3</div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SCENE 9 — THE LOOP BREAKS
+  ══════════════════════════════ -->
+  <div id="s9" class="scene">
+    <div class="noise-overlay"></div>
+    <svg style="position:absolute;inset:0;" width="700" height="420" viewBox="0 0 700 420">
+      <defs>
+        <linearGradient id="homeWall2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#08060e"/>
+          <stop offset="100%" stop-color="#0c0a14"/>
+        </linearGradient>
+        <radialGradient id="phoneGlow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(0,255,100,.15)"/>
+          <stop offset="100%" stop-color="rgba(0,255,100,0)"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Room -->
+      <rect width="700" height="420" fill="url(#homeWall2)"/>
+      <!-- Floor -->
+      <rect x="0" y="300" width="700" height="120" fill="#080610"/>
+      <line x1="0" y1="300" x2="700" y2="300" stroke="#14102a" stroke-width="2"/>
+
+      <!-- Desk area (left) -->
+      <rect x="30" y="220" width="250" height="82" fill="#100d1e" stroke="#1a162e" stroke-width="2"/>
+      <rect x="50" y="190" width="8" height="112" fill="#0e0c1a"/>
+      <rect x="262" y="190" width="8" height="112" fill="#0e0c1a"/>
+      <!-- desk surface items -->
+      <!-- pencils -->
+      <rect x="60" y="216" width="4" height="30" rx="1" fill="#ffe033" transform="rotate(-15,62,231)"/>
+      <rect x="70" y="216" width="4" height="28" rx="1" fill="#ff8833" transform="rotate(-8,72,230)"/>
+      <!-- eraser -->
+      <rect x="90" y="220" width="16" height="8" rx="2" fill="#e88888"/>
+
+      <!-- SKETCHBOOK (open on desk) -->
+      <!-- book body -->
+      <rect x="120" y="198" width="160" height="108" rx="4" fill="#e8e0cc" stroke="#c8c0aa" stroke-width="2" transform="rotate(-5,200,252)"/>
+      <!-- book spine -->
+      <rect x="196" y="198" width="8" height="108" fill="#d0c8b4" transform="rotate(-5,200,252)"/>
+      <!-- left page -->
+      <rect x="122" y="200" width="72" height="104" rx="2" fill="#f0e8d8" transform="rotate(-5,200,252)"/>
+      <!-- right page content — THE KEY PAGE -->
+      <rect x="204" y="200" width="74" height="104" rx="2" fill="#eee6d6" transform="rotate(-5,200,252)"/>
+      <!-- Sketch of the panel on right page -->
+      <rect x="218" y="210" width="40" height="26" rx="2" fill="none" stroke="#666" stroke-width="1.5" transform="rotate(-5,200,252)"/>
+      <circle cx="238" cy="224" r="4" fill="#cc2244" transform="rotate(-5,200,252)"/>
+      <circle cx="238" cy="224" r="2" fill="#ff4466" transform="rotate(-5,200,252)"/>
+      <!-- handwriting lines -->
+      <line x1="212" y1="244" x2="268" y2="242" stroke="#333" stroke-width="1.2" transform="rotate(-5,200,252)"/>
+      <line x1="212" y1="252" x2="260" y2="250" stroke="#444" stroke-width="1" transform="rotate(-5,200,252)"/>
+      <!-- THE KEY SCRAWL (readable) -->
+      <text x="214" y="270" font-family="Share Tech Mono" font-size="5.5" fill="#cc2244" transform="rotate(-5,200,252)">ITS A LOOP.</text>
+      <text x="212" y="278" font-family="Share Tech Mono" font-size="5.5" fill="#cc2244" transform="rotate(-5,200,252)">DON'T TRUST</text>
+      <text x="212" y="286" font-family="Share Tech Mono" font-size="5.5" fill="#cc2244" transform="rotate(-5,200,252)">ANYTHING</text>
+      <!-- lines on left page (random doodles) -->
+      <ellipse cx="160" cy="248" rx="20" ry="14" fill="none" stroke="#aaa" stroke-width="1" transform="rotate(-5,200,252)"/>
+      <line x1="135" y1="256" x2="188" y2="256" stroke="#bbb" stroke-width="1" transform="rotate(-5,200,252)"/>
+      <line x1="135" y1="264" x2="183" y2="264" stroke="#bbb" stroke-width=".8" transform="rotate(-5,200,252)"/>
+      <line x1="135" y1="272" x2="180" y2="272" stroke="#bbb" stroke-width=".8" transform="rotate(-5,200,252)"/>
+
+      <!-- Lamp on desk -->
+      <rect x="250" y="186" width="6" height="40" fill="#1a1428" stroke="#1e1830" stroke-width="1"/>
+      <path d="M253,186 Q270,175 280,180" stroke="#1a1428" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="282" cy="180" rx="16" ry="10" fill="#1e1c30"/>
+      <ellipse cx="282" cy="182" rx="12" ry="8" fill="rgba(255,200,80,.12)"/>
+
+      <!-- Phone on bed (right) -->
+      <!-- Bed -->
+      <rect x="400" y="200" width="260" height="120" rx="6" fill="#12102a" stroke="#1c1a38" stroke-width="2"/>
+      <rect x="406" y="206" width="248" height="24" rx="4" fill="#100e28"/><!-- pillow -->
+      <rect x="406" y="234" width="248" height="82" rx="3" fill="#0e0c26"/><!-- blanket -->
+
+      <!-- BIG PHONE centered on bed with notification -->
+      <rect x="470" y="218" width="120" height="88" rx="8" fill="#0a0a18" stroke="#1e1e30" stroke-width="2"/>
+      <!-- screen -->
+      <rect x="475" y="226" width="110" height="72" rx="4" fill="#050510"/>
+      <!-- notification glow -->
+      <ellipse cx="530" cy="262" rx="55" ry="36" fill="url(#phoneGlow2)" opacity=".8"/>
+      <!-- alert banner -->
+      <rect x="478" y="228" width="104" height="38" rx="3" fill="#0a0e14" stroke="rgba(0,255,100,.4)" stroke-width="1"/>
+      <text x="530" y="240" font-family="Share Tech Mono" font-size="6" fill="rgba(0,255,100,.9)" text-anchor="middle">⚠ URGENT — 6:49 AM</text>
+      <text x="530" y="250" font-family="Share Tech Mono" font-size="5.5" fill="#888" text-anchor="middle">DO NOT GO TO SCHOOL.</text>
+      <text x="530" y="259" font-family="Share Tech Mono" font-size="5.5" fill="#888" text-anchor="middle">ITS A LOOP. THE PANEL</text>
+      <text x="530" y="267" font-family="Share Tech Mono" font-size="5.5" fill="rgba(0,255,100,.7)" text-anchor="middle">IS THE KEY. -CHRIS 6:49</text>
+      <!-- ZONE 47 FLASH line -->
+      <rect x="478" y="268" width="104" height="24" rx="3" fill="#100808" stroke="rgba(255,30,50,.3)" stroke-width="1" style="animation:labFlicker 2s step-end infinite"/>
+      <text x="530" y="282" font-family="Share Tech Mono" font-size="6.5" fill="rgba(255,30,50,.85)" text-anchor="middle" style="animation:blink 1s step-end infinite">ZONE 47 — ACCESS DENIED</text>
+      <!-- home indicator -->
+      <rect x="515" y="305" width="30" height="3" rx="1.5" fill="#1a1a2a"/>
+      <!-- camera -->
+      <circle cx="530" cy="222" r="2" fill="#0c0c1a"/>
+
+      <!-- Wall text / glitch fragments (ambient) -->
+      <text x="620" y="120" font-family="Share Tech Mono" font-size="7" fill="rgba(255,30,50,.12)" letter-spacing="2">ZONE47</text>
+      <text x="40" y="180" font-family="Share Tech Mono" font-size="6" fill="rgba(0,255,100,.08)" letter-spacing="1">IT'S A LOOP</text>
+      <text x="600" y="280" font-family="Share Tech Mono" font-size="6" fill="rgba(255,30,50,.1)" letter-spacing="1">PROJECT SANCHEZ</text>
+    </svg>
+
+    <!-- Glitch text overlay (endcard) -->
+    <div id="s9-glitch" style="position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .8s;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.75);">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:10px;color:#ffe033;text-shadow:0 0 40px #ffe03388;animation:titlePulse 2s ease-in-out infinite;line-height:1;text-align:center;">ZONE 47</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:6px;color:#ff2244;margin-top:16px;animation:blink 1s step-end infinite;text-align:center;">IT'S A LOOP. IT'S ALWAYS BEEN A LOOP.</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:4px;color:#333;margin-top:24px;text-align:center;">NEXT LOOP: ACCESSING ZONE 47 — SECTOR UNKNOWN</div>
+    </div>
+
+    <!-- Sketchbook close-up indicator -->
+    <div id="s9-sketchbook" style="position:absolute;top:20px;left:20px;opacity:0;transition:opacity .6s;">
+      <svg width="100" height="24" viewBox="0 0 100 24">
+        <rect width="100" height="24" rx="3" fill="rgba(0,0,0,.7)" stroke="rgba(255,220,50,.3)" stroke-width="1"/>
+        <text x="50" y="15" font-family="Share Tech Mono" font-size="7" fill="rgba(255,220,50,.8)" text-anchor="middle" letter-spacing="1">SKETCHBOOK — OPEN</text>
+      </svg>
+    </div>
+
+    <div id="s9-cap1" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ffe033;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ffe033;">Chris</div>
+      <div class="cap-text">"I don't remember writing any of this. THE PANEL. ITS A LOOP. I KNEW I WASN'T CRAZY."</div>
+    </div>
+    <div id="s9-phone" style="position:absolute;bottom:20px;left:20px;opacity:0;transition:opacity .4s;"></div>
+    <div id="s9-cap2" class="cap" style="bottom:20px;left:20px;border-left:3px solid #00ff77;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#00ff77;">Phone — Note from Chris (6:49 AM)</div>
+      <div class="cap-text">"DO NOT GO TO SCHOOL. ITS A LOOP. THE METAL PANEL IN THE WOODS IS THE KEY. -CHRIS 6:49 A.M"</div>
+    </div>
+    <div id="s9-cap3" class="cap" style="bottom:20px;left:20px;border-left:3px solid #ff2244;opacity:0;transition:opacity .4s;">
+      <div class="cap-speaker" style="color:#ff2244;">— END OF CHAPTER ONE —</div>
+      <div class="cap-text">He stood there. Stitch behind his ear. A note from himself. A loop he couldn't remember. And somewhere — ZONE 47 was watching.</div>
+    </div>
+
+    <div class="scene-tag">09 / THE LOOP BREAKS</div>
+  </div>
+
+</div><!-- end stage -->
+
+<!-- CONTROLS -->
+<div id="controls">
+  <button id="playBtn">▶ Play</button>
+  <div id="progressBar"><div id="progressFill"></div></div>
+  <span id="timeLabel">0:00 / 2:08</span>
+</div>
+<div id="sceneLabel">press play to begin</div>
+
+<script>
+// ── SCENE TIMING (seconds) ──
+const scenes=[
+  {id:'s0',start:0,end:5},
+  {id:'s1',start:5,end:18},
+  {id:'s2',start:18,end:30},
+  {id:'s3',start:30,end:44},
+  {id:'s4',start:44,end:56},
+  {id:'s5',start:56,end:68},
+  {id:'s6',start:68,end:82},
+  {id:'s7',start:82,end:98},
+  {id:'s8',start:98,end:114},
+  {id:'s9',start:114,end:128},
+];
+const TOTAL=128;
+
+let T=0,playing=false,lastTs=null,raf=null;
+let glitching=false,zapActive=false,zapT=0;
+
+// ── ZAP ──
+function triggerZap(){
+  zapActive=true;zapT=0;
+  const zo=document.getElementById('zap-overlay');
+  const go=document.getElementById('glitch-overlay');
+  zo.style.opacity='1';
+  zo.style.background='rgba(255,255,255,.6)';
+  go.style.opacity='1';
+  setTimeout(()=>{
+    zo.style.background='rgba(255,200,0,.2)';
+    setTimeout(()=>{zo.style.opacity='0';go.style.opacity='0';},300);
+  },120);
+  // shake
+  const stage=document.getElementById('stage');
+  stage.style.transform='translateX(-4px)';
+  setTimeout(()=>{stage.style.transform='translateX(4px)';
+    setTimeout(()=>{stage.style.transform='translateX(-2px)';
+      setTimeout(()=>{stage.style.transform='translateX(0)';},60);},60);},60);
+}
+
+// ── SCENE SHOW/HIDE ──
+function setScene(idx){
+  scenes.forEach((s,i)=>{
+    const el=document.getElementById(s.id);
+    if(i===idx){el.classList.add('active');}else{el.classList.remove('active');}
+  });
+}
+
+// ── PER-SCENE ELEMENT CONTROLS ──
+function show(id){const e=document.getElementById(id);if(e)e.style.opacity='1';}
+function hide(id){const e=document.getElementById(id);if(e)e.style.opacity='0';}
+function move(id,prop,val){const e=document.getElementById(id);if(e)e.style[prop]=val;}
+
+let triggered={};
+function once(key,fn){if(!triggered[key]){triggered[key]=true;fn();}}
+
+function updateScene(t){
+  // ── Determine current scene ──
+  let sceneIdx=0;
+  for(let i=0;i<scenes.length;i++){if(t>=scenes[i].start)sceneIdx=i;}
+  setScene(sceneIdx);
+
+  const rel=t-scenes[sceneIdx].start;// time relative to scene start
+
+  // ── SCENE 0: TITLE ──
+  // nothing dynamic needed
+
+  // ── SCENE 1: BEDROOM ──
+  if(sceneIdx===1){
+    if(rel>1) show('s1-alarm');
+    else hide('s1-alarm');
+    if(rel>2) show('s1-cap');
+    if(rel>6) once('zap1',()=>triggerZap());
+    if(rel>6.5) show('s1-loop');
+  }
+
+  // ── SCENE 2: STREET ──
+  if(sceneIdx===2){
+    const el=document.getElementById('s2-chris');
+    if(el){
+      // animate from left to right
+      const pct=Math.min(rel/10,1);
+      const x=-80+pct*820;
+      el.style.left=x+'px';
+    }
+    if(rel>1) show('s2-cap1');
+    if(rel>4){hide('s2-cap1');show('s2-cap2');}
+    if(rel>10) hide('s2-cap2');
+    show('s2-loop');
+  }
+
+  // ── SCENE 3: FOREST ──
+  if(sceneIdx===3){
+    show('s3-chris');
+    if(rel>2) show('s3-cap1');
+    if(rel>5){
+      // creature slides in
+      const cr=document.getElementById('s3-creature');
+      if(cr){cr.style.opacity='1';cr.style.right='50px';}
+      once('creatureAppear',()=>{});
+    }
+    if(rel>5.5){hide('s3-cap1');show('s3-cap2');}
+    if(rel>8) once('zap2',()=>triggerZap());
+    show('s3-loop');
+  }
+
+  // ── SCENE 4: LAB ──
+  if(sceneIdx===4){
+    show('s4-haz1');show('s4-haz2');
+    if(rel>1.5) show('s4-phone');
+    if(rel>2) show('s4-cap1');
+    if(rel>6){hide('s4-cap1');show('s4-cap2');}
+    if(rel>9) once('zap3',()=>triggerZap());
+    show('s4-loop');
+  }
+
+  // ── SCENE 5: MIRROR ──
+  if(sceneIdx===5){
+    if(rel>1.5) show('s5-cap');
+    if(rel>2.5) show('s5-zoom');
+    if(rel>7) once('zap4',()=>triggerZap());
+    if(rel>7.5) show('s5-cap2');
+  }
+
+  // ── SCENE 6: THE BUS ──
+  if(sceneIdx===6){
+    show('s6-chubs');show('s6-chris');
+    if(rel>1.5) show('s6-cap1');
+    if(rel>5){hide('s6-cap1');show('s6-cap2');}
+    if(rel>9){hide('s6-cap2');show('s6-cap3');}
+    if(rel>11) show('s6-airpods');
+    show('s6-loop');
+  }
+
+  // ── SCENE 7: CAMP ──
+  if(sceneIdx===7){
+    if(rel>1) show('s7-cap1');
+    if(rel>4){
+      const cr=document.getElementById('s7-creature');
+      if(cr){cr.style.opacity='1';cr.style.left='400px';}
+    }
+    if(rel>4.5){hide('s7-cap1');show('s7-cap2');}
+    if(rel>8){hide('s7-cap2');show('s7-panel');}
+    if(rel>9) show('s7-cap3');
+    if(rel>13) once('zap5',()=>triggerZap());
+    show('s7-loop');
+  }
+
+  // ── SCENE 8: MODIFICATION ROOM ──
+  if(sceneIdx===8){
+    if(rel>1) show('s8-cap1');
+    if(rel>4){hide('s8-cap1');show('s8-stretcher');}
+    if(rel>5) show('s8-cap2');
+    if(rel>9){hide('s8-cap2');show('s8-cap3');}
+    if(rel>13) once('zap6',()=>triggerZap());
+    show('s8-loop');
+  }
+
+  // ── SCENE 9: THE LOOP BREAKS ──
+  if(sceneIdx===9){
+    if(rel>1) show('s9-sketchbook');
+    if(rel>2) show('s9-cap1');
+    if(rel>5){hide('s9-cap1');show('s9-phone');}
+    if(rel>7) show('s9-cap2');
+    if(rel>10){hide('s9-cap2');show('s9-cap3');}
+    if(rel>12) show('s9-glitch');
+  }
+}
+
+// ── LABELS ──
+const sceneNames=['title','01 — the morning loop','02 — the street','03 — the forest','04 — zone 47 lab','05 — the mirror','06 — the bus','07 — camp','08 — the modification room','09 — the loop breaks'];
+function updateHUD(){
+  document.getElementById('progressFill').style.width=(T/TOTAL*100)+'%';
+  const s=Math.floor(T)%60,m=Math.floor(T/60);
+  document.getElementById('timeLabel').textContent=`${m}:${String(s).padStart(2,'0')} / 2:08`;
+  let si=0;for(let i=0;i<scenes.length;i++){if(T>=scenes[i].start)si=i;}
+  document.getElementById('sceneLabel').textContent=sceneNames[si]||'';
+}
+
+// ── LOOP ──
+function loop(ts){
+  if(lastTs===null)lastTs=ts;
+  const dt=Math.min((ts-lastTs)/1000,.05);
+  lastTs=ts;
+  T=Math.min(T+dt,TOTAL);
+  updateScene(T);
+  updateHUD();
+  if(T<TOTAL&&playing)raf=requestAnimationFrame(loop);
+  else if(T>=TOTAL){playing=false;document.getElementById('playBtn').textContent='↺ Replay';}
+}
+
+// ── RESET ──
+function reset(){
+  T=0;triggered={};
+  // reset creatures/elements
+  const cr=document.getElementById('s3-creature');
+  if(cr){cr.style.opacity='0';cr.style.right='-200px';}
+  const cr7=document.getElementById('s7-creature');
+  if(cr7){cr7.style.opacity='0';cr7.style.left='-200px';}
+  ['s1-alarm','s1-cap','s1-loop','s2-cap1','s2-cap2','s2-loop','s3-cap1','s3-cap2','s3-loop','s3-chris','s4-haz1','s4-haz2','s4-phone','s4-cap1','s4-cap2','s4-loop','s5-cap','s5-cap2','s5-zoom','s6-chubs','s6-chris','s6-cap1','s6-cap2','s6-cap3','s6-airpods','s6-loop','s7-cap1','s7-cap2','s7-cap3','s7-panel','s7-loop','s8-cap1','s8-cap2','s8-cap3','s8-stretcher','s8-loop','s9-sketchbook','s9-phone','s9-cap1','s9-cap2','s9-cap3','s9-glitch'].forEach(hide);
+  const sc=document.getElementById('s2-chris');if(sc)sc.style.left='-80px';
+  document.getElementById('zap-overlay').style.opacity='0';
+  document.getElementById('glitch-overlay').style.opacity='0';
+  setScene(0);
+}
+
+document.getElementById('playBtn').addEventListener('click',()=>{
+  if(T>=TOTAL){reset();}
+  if(!playing){
+    playing=true;lastTs=null;
+    document.getElementById('playBtn').textContent='❚❚ Pause';
+    raf=requestAnimationFrame(loop);
+  } else {
+    playing=false;document.getElementById('playBtn').textContent='▶ Play';
+    cancelAnimationFrame(raf);
+  }
+});
+document.getElementById('progressBar').addEventListener('click',function(e){
+  const r=this.getBoundingClientRect();
+  T=Math.max(0,Math.min((e.clientX-r.left)/r.width*TOTAL,TOTAL));
+  reset();T=(e.clientX-r.left)/r.width*TOTAL;
+  updateScene(T);updateHUD();
+});
+
+// Initial render
+updateScene(0);updateHUD();
+</script>
+</body>
+</html>
